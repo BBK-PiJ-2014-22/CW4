@@ -59,6 +59,7 @@ public class ContactTest {
 	public void testAddNotes1(){
 		String addNote = "Second Contact";
 		String resultNote = targetNotes+"\n\n"+addNote;
+		contact.addNotes(addNote);
 		assertEquals(resultNote, contact.getNotes());
 	}
 	
