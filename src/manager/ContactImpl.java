@@ -7,11 +7,11 @@ public class ContactImpl implements Contact {
 	String name;
 	String notes;
 	
-	/**TODO - Add full javadoc
+	/**Constructs a new contact with id, name and notes attached to it
 	 * 
-	 * @param id
-	 * @param name
-	 * @param notes
+	 * @param id contact ID
+	 * @param name Name of the contact
+	 * @param notes Notes about interaction with contact
 	 */
 	public ContactImpl(int id, String name, String notes){
 		this.id = id;
