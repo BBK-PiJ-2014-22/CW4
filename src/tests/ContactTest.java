@@ -25,7 +25,7 @@ public class ContactTest {
 	@Parameters
 	public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {     
-                 { 1, "Bob Geldoff", "First Contact"}  
+                 { 1, "Bob Geldoff", "First Contact"}     
            });
     }
 	
