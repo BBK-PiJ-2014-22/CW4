@@ -43,7 +43,7 @@ public class MeetingTest {
 	
 	public MeetingTest(Class testClass, int id, int year, int month, int day){
 		
-		Constructor<testClass.class> con = Class.getConstructor(int.class, Calendar.class);
+		Constructor<testClass> con = testClass.getConstructor(int.class, Calendar.class);
 		
 		
 		this.meeting = meeting;
