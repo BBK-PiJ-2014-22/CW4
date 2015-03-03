@@ -39,7 +39,7 @@ public class PastMeetingTest {
                 {1,  -1,  0, null },
                 {1,  -1,  1, "" },
                 {1,  -1,  1, "Past Meeting Notes" },
-                {1,  1,   1, "Future Meeting Notes" }
+                {1,   1,  1, "Future Meeting Notes" }
 
           });
 		
@@ -59,7 +59,11 @@ public class PastMeetingTest {
 	
 	@Before
 	public void setUp(){
-		this.meeting = new PastMeetingImpl(this.meetingid, this.meetingdate, this.contacts);
+		if (this.notes == null){
+			this.meeting = new PastMeetingImpl(this.meetingid, this.meetingdate, this.contacts);
+		}else{
+			this.meeting = new PastMeetingImpl(this.meetingid, this.meetingdate, this.contacts, this.notes);
+		}
 	}
 	
 	@Test
