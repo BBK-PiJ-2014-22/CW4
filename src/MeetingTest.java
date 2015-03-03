@@ -1,7 +1,6 @@
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -71,6 +70,19 @@ public class MeetingTest {
 	@Test
 	public void testGetContacts() {
 		assertEquals(this.contacts, meeting.getContacts());
+	}
+	
+	@Test
+	public void testEqualToEqual(){
+		Meeting compare = new MeetingImpl(this.meetingid, this.meetingdate, this.contacts);
+		assertEquals(true,meeting.equals(compare));		
+	}
+	
+	@Test
+	public void testEqualToUnequal(){
+		Meeting compare = new MeetingImpl(this.meetingid-1, this.meetingdate, this.contacts);
+		assertEquals(false,meeting.equals(compare));	
+		
 	}
 	
 	

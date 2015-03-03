@@ -5,29 +5,31 @@ import java.util.Set;
 
 public class MeetingImpl implements Meeting {
 	
+	int id;
+	Calendar date;
+	Set<Contact> contacts;
+	
 	
 	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
-		// TODO add in actual setting of date and id
-	
+		this.id = id;
+		this.date = date;
+		this.contacts = contacts;
 	}
 
 	
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.id;
 	}
 
 	@Override
 	public Calendar getDate() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.date;
 	}
 
 	@Override
 	public Set<Contact> getContacts() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.contacts;
 	}
 
 }
