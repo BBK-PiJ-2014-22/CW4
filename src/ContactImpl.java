@@ -1,7 +1,5 @@
 
-
-
-public class ContactImpl implements Contact {
+public class ContactImpl implements Contact, Comparable {
 
 	
 	int id;
@@ -46,5 +44,19 @@ public class ContactImpl implements Contact {
 	@Override
 	public void addNotes(String note) {
 		this.notes += "\n\n"+note;
+	}
+
+	/**Contacts are sorted based upon ID
+	 * 
+	 */
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public boolean equals(Object object){
+		return false;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 public class MeetingImpl implements Meeting {
 	
 	
-	public MeetingImpl(int id, Calendar date){
+	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		// TODO add in actual setting of date and id
 	
 	}
