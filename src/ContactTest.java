@@ -73,9 +73,16 @@ public class ContactTest {
 		assertEquals(false, contact.equals(comparedContact));
 	}
 	
+	public void testEqualToRandomObject(){
+		Integer compare = new Integer(1);
+		assertEquals(false,contact.equals(compare));		
+	}
+	
 	@Test
 	public void testToString(){
 		String targetString = "["+this.targetID+", "+this.targetName+", "+this.targetNotes+"]";
 		assertEquals(targetString, contact.toString());
 	}
+	
+	
 }

@@ -31,5 +31,17 @@ public class MeetingImpl implements Meeting {
 	public Set<Contact> getContacts() {
 		return this.contacts;
 	}
+	
+	@Override
+	public boolean equals(Object object){
+		try{
+			Meeting compare = (Meeting) object;
+			if (this.getId() == compare.getId())
+				return true;		
+		}catch (ClassCastException ex){
+			//return statement below - any object apart from a class implementing Contact is not equal to a contact
+		}
+		return false;
+	}
 
 }
