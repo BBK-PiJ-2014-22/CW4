@@ -1,5 +1,5 @@
 
-public class ContactImpl implements Contact, Comparable {
+public class ContactImpl implements Contact {
 
 	
 	int id;
@@ -48,21 +48,17 @@ public class ContactImpl implements Contact, Comparable {
 
 	/**{@inheritDoc}
 	 * 
-	 * Contacts are sorted based upon ID
-	 * 
-	 */
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/**{@inheritDoc}
-	 * 
-	 * Contacts with the same ID are equal, else not
+	 * Contacts are equal to other contacts with the same ID else not
 	 */
 	@Override
 	public boolean equals(Object object){
+		try{
+			Contact compare = (Contact) object;
+			if (this.getId() == compare.getId())
+				return true;		
+		}catch (ClassCastException ex){
+			//return statement below - any object apart from a class implementing Contact is not equal to a contact
+		}
 		return false;
 	}
 
@@ -72,6 +68,6 @@ public class ContactImpl implements Contact, Comparable {
 	 */
 	@Override
 	public String toString(){
-		return "Not Implemented";
+		return "["+this.id+", "+this.name+", "+this.notes+"]";
 	}
 }
