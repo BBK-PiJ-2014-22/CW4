@@ -73,6 +73,7 @@ public class ContactTest {
 		assertEquals(false, contact.equals(comparedContact));
 	}
 	
+	@Test
 	public void testEqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,contact.equals(compare));		

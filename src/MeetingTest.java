@@ -85,6 +85,7 @@ public class MeetingTest {
 		
 	}
 	
+	@Test
 	public void testEqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,meeting.equals(compare));		
