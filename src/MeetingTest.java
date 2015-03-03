@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class MeetingTest {
 		this.meetingdate = new GregorianCalendar();
 		this.meetingdate.add(Calendar.MONTH,monthChange);
 		this.meetingid = id;
-		this.contacts = new TreeSet<Contact>();
+		this.contacts = new HashSet<Contact>();
 		
 		for (int i = 0 ; i < numberOfContacts ; i++)
 			this.contacts.add(new ContactImpl(i, "Contact"+i, "Notes for contact "+i));
@@ -55,22 +55,22 @@ public class MeetingTest {
 	
 	@Before
 	public void setUp(){
-		this.meeting = new MeetingImpl(this.meetingid, this.meetingdate, this.contacts);
+		meeting = new MeetingImpl(this.meetingid, this.meetingdate, this.contacts);
 	}
 
 	@Test
 	public void testGetID() {
-		assertEquals(this.meeting.getId(), this.meetingid);
+		assertEquals(this.meetingid, meeting.getId());
 	}
 
 	@Test
 	public void testGetDate() {
-		assertEquals(this.meeting.getDate(), this.meetingdate);
+		assertEquals(this.meetingdate, meeting.getDate());
 	}
 	
 	@Test
 	public void testGetContacts() {
-		assertEquals(this.meeting.getContacts(), this.contacts);
+		assertEquals(this.contacts, meeting.getContacts());
 	}
 	
 	
