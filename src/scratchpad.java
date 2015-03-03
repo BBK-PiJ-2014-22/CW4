@@ -6,8 +6,18 @@ public class scratchpad {
 
 	public static void main(String[] args){
 	
-	Object test = new Integer(1);
-	Contact contact = (Contact)test; 
+		Calendar old = new GregorianCalendar();
+		
+		old.add(Calendar.MONTH, -1);
+		
+		Calendar now = new GregorianCalendar();
+		
+		System.out.println(old.compareTo(now));
+		
+		
+		
+	//Object test = new Integer(1);
+	//Contact contact = (Contact)test; 
 		
 		
 		
@@ -35,6 +45,8 @@ public class scratchpad {
 		return day + "/"+month+"/"+year;
 				
 	}
+	
+	
 	
 }
 
