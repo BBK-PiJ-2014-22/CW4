@@ -33,7 +33,6 @@ public class ContactTest {
 	}
 	
 	@Before
-	
 	public void setUp() throws Exception {
 		contact = new ContactImpl(targetID, targetName, targetNotes);
 	}
@@ -60,6 +59,23 @@ public class ContactTest {
 		contact.addNotes(addNote);
 		assertEquals(resultNote, contact.getNotes());
 	}
+
 	
+	@Test
+	public void testEqualToEquals(){
+		Contact comparedContact = new ContactImpl(targetID, targetName, targetNotes);
+		assertEquals(true, contact.equals(comparedContact));
+	}
 	
+	@Test
+	public void testEqualToNotEqual(){
+		Contact comparedContact = new ContactImpl(targetID+1, "Other Contact", "New Notes");
+		assertEquals(false, contact.equals(comparedContact));
+	}
+	
+	@Test
+	public void testToString(){
+		String targetString = "["+this.targetID+", "+this.targetName+", "+this.targetNotes+"]";
+		assertEquals(targetString, contact.toString());
+	}
 }

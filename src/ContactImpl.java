@@ -46,7 +46,9 @@ public class ContactImpl implements Contact, Comparable {
 		this.notes += "\n\n"+note;
 	}
 
-	/**Contacts are sorted based upon ID
+	/**{@inheritDoc}
+	 * 
+	 * Contacts are sorted based upon ID
 	 * 
 	 */
 	@Override
@@ -55,8 +57,21 @@ public class ContactImpl implements Contact, Comparable {
 		return 0;
 	}
 	
+	/**{@inheritDoc}
+	 * 
+	 * Contacts with the same ID are equal, else not
+	 */
 	@Override
 	public boolean equals(Object object){
 		return false;
+	}
+
+	/**{@inheritDoc}
+	 * 
+	 * Will display as [ID, Contact Name, Notes]
+	 */
+	@Override
+	public String toString(){
+		return "Not Implemented";
 	}
 }
