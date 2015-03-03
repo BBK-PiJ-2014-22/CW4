@@ -35,7 +35,9 @@ public class ContactManagerAddMeetingTest {
 	public void setUp() throws Exception {
 	}
 
-	/*Add FutureMeeting tests:
+	/*TODO - Write thebelow tests
+	 * 
+	 * Add FutureMeeting tests:
 	 * 
 	 * 1) Past meeting added, in the past, contacts correct
 	 * 2) Past meeting added in the future
