@@ -4,14 +4,21 @@ import java.util.Set;
 
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
+	String notes;
+	
 	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		super(id, date, contacts);
+		this.notes = "";
+	}
+	
+	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes){
+		super(id, date, contacts);
+		this.notes = notes;
 	}
 	
 	@Override
 	public String getNotes() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.notes;
 	}
 
 }
