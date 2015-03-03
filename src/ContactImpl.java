@@ -1,4 +1,5 @@
-package manager;
+
+
 
 public class ContactImpl implements Contact {
 

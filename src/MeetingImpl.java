@@ -1,4 +1,4 @@
-package manager;
+
 
 import java.util.Calendar;
 import java.util.Set;
@@ -10,12 +10,7 @@ public class MeetingImpl implements Meeting {
 		// TODO add in actual setting of date and id
 	
 	}
-	
-	public MeetingImpl(int id, int year, int month, int day){
-		// TODO add in actual setting of date and id
-	
-	}
-	
+
 	
 	@Override
 	public int getId() {

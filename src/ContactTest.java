@@ -1,4 +1,4 @@
-package tests;
+
 
 import static org.junit.Assert.*;
 
@@ -10,9 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import manager.Contact;
-import manager.ContactImpl;
 
 @RunWith(Parameterized.class)
 public class ContactTest {
@@ -36,6 +33,7 @@ public class ContactTest {
 	}
 	
 	@Before
+	
 	public void setUp() throws Exception {
 		contact = new ContactImpl(targetID, targetName, targetNotes);
 	}
