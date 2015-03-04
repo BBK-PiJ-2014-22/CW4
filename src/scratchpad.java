@@ -6,14 +6,17 @@ public class scratchpad {
 
 	public static void main(String[] args){
 	
-		Calendar old = new GregorianCalendar();
+	
+		Object[] data = collateTestData("1",1,'1');
 		
-		old.add(Calendar.MONTH, -1);
+		for (Object datum : data)
+			System.out.println(datum);
+	
 		
-		Calendar now = new GregorianCalendar();
-		
-		System.out.println(old.compareTo(now));
-		
+	//Calendar old = new GregorianCalendar();
+	//	old.add(Calendar.MONTH, -1);	
+	//Calendar now = new GregorianCalendar();
+	//System.out.println(old.compareTo(now));
 		
 		
 	//Object test = new Integer(1);
@@ -46,7 +49,9 @@ public class scratchpad {
 				
 	}
 	
-	
+	private static Object[] collateTestData(Object... data){
+		return data;
+	}
 	
 }
 
