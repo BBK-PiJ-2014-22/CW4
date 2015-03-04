@@ -1,10 +1,22 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class ContactManagerImpl implements ContactManager {
 
+	
+	List<Contact> contactlist;
+	
+	
+	public void ContactMangerImpl(){
+		contactlist = new ArrayList<Contact>();
+	}
+	
+	
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		// TODO Auto-generated method stub
@@ -64,14 +76,17 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		// TODO Auto-generated method stub
+		contactlist.add(new ContactImpl(contactlist.size(), name, notes));
 
 	}
 
 	@Override
 	public Set<Contact> getContacts(int... ids) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Contact> result = contactlist.stream()
+				                         .filter(contact -> Arrays.asList(ids).contains(contact.getId()))
+				                         .collect(Collectors.toSet());
+		
+		return result;              
 	}
 
 	@Override
