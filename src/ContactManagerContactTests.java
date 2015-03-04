@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,18 +56,41 @@ public class ContactManagerContactTests {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void getContactNoMatchingID(){
-		cm.addNewContact("Test Name", "Test notes");
+	public void getContactNoMatchingSingleID(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
 		cm.getContacts(10);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void getContactNoMatchingMultipleIDs(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
+		cm.getContacts(10,11,12,13);
+	}
 	
-	 //get contact(int) test
-	 //2) 1 id, no matches
-	 //3) Multiple ids, all match
-	 //4) mulltiple IDs, none match
+	@Test(expected = IllegalArgumentException.class)
+	public void getContactSomeMatchingMultipleIDs(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
+		cm.getContacts(7,8,9,10);
+	}
 	
-	
+	@Test
+	public void getContactAllMatchingMultipleIDs(){
+		
+		String namestem = "Test Name";
+		String notestem = "Test Notes";
+		int c1 = 7;
+		int c2 = 8;
+		
+		addXContacts(cm, 9, namestem, notestem);
+		Set<Contact> returned = cm.getContacts(c1, c2);
+		Object[] actual = returned.toArray();
+		Object[] expected = {new ContactImpl(c1, namestem+c1, notestem+c1),
+							 new ContactImpl(c2, namestem+c2, notestem+c2)};
+		
+		assertArrayEquals(expected, actual);
+		
+	}
+			
 	 
 	 /*
 	 * get contact(string) tests
