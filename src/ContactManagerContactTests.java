@@ -20,15 +20,17 @@ public class ContactManagerContactTests {
 	@Test
 	public void addAndGetNormalContact(){
 	
-		Object[] expected = {0,"Test Name", "Test Notes"};
+		
+		Set<Contact> expected = new HashSet<Contact>();
+		
+		Object[] testdata = {0,"Test Name", "Test Notes"};
 	
-		cm.addNewContact((String)expected[1], (String)expected[2]);
+		cm.addNewContact((String)testdata[1], (String)testdata[2]);
+		expected.add(new ContactImpl((Integer)testdata[0], (String)testdata[1], (String)testdata[2]));
 		
-		Contact firstcontact = (Contact) cm.getContacts((Integer) expected[0]).toArray()[0];
+		Set<Contact> actual = cm.getContacts((Integer)testdata[0]);
 		
-		Object[] actual = {firstcontact.getId(), firstcontact.getName(), firstcontact.getNotes()};
-		
-		assertArrayEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
 	@Test
