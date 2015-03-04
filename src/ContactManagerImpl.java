@@ -83,7 +83,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public Set<Contact> getContacts(int... ids) {
 		Set<Contact> result = contactlist.stream()
-				                         .filter(contact -> contact.getId() == 0)
+				                         .filter(contact -> Arrays.asList(ids).contains(contact.getId()))			       
 				                         .collect(Collectors.toSet());
 										 
 		return result;              

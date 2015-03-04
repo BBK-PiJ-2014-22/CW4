@@ -19,17 +19,12 @@ public class ContactManagerContactTests {
 	
 	@Test
 	public void addAndGetNormalContact(){
-	
 		
 		Object[] testdata = {0,"Test Name", "Test Notes"};
 		Object[] expected = {new ContactImpl((Integer)testdata[0], (String)testdata[1], (String)testdata[2])};
-		
-		
-		
 		cm.addNewContact((String)testdata[1], (String)testdata[2]);
-		
-		Object[] actual = cm.getContacts(0).toArray();
-		
+		Object[] actual = cm.getContacts(0).toArray();		
+	
 		assertArrayEquals(expected, actual);
 	}
 	

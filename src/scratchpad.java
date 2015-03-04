@@ -10,10 +10,17 @@ public class scratchpad {
 
 	public static void main(String[] args){
 	
-		List<Integer> original = Arrays.asList(1,2,3,4,5,6,7,8);
+		List<Contact> original = Arrays.asList(new ContactImpl(0,"0","0"),
+											   new ContactImpl(1,"1","1"),
+											   new ContactImpl(2,"2","2"),
+											   new ContactImpl(3,"3","3"));
 		Integer[] filter = {2,3};
 		
+		for (Contact contact : original){
+			System.out.println(Arrays.asList(filter).contains(contact.getId()));
+		}
 
+	
 		
 		Set<Object> result = original.stream()
                 .filter(number -> Arrays.asList(filter).contains(number))
