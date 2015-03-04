@@ -54,7 +54,10 @@ public class ContactImpl implements Contact {
 	public boolean equals(Object object){
 		try{
 			Contact compare = (Contact) object;
-			if (this.getId() == compare.getId())
+			if (this.getId() == compare.getId() &&
+				this.getName().equals(compare.getName()) &&
+				this.getNotes().equals(compare.getNotes())
+				)
 				return true;		
 		}catch (ClassCastException ex){
 			//return statement below - any object apart from a class implementing Contact is not equal to a contact
