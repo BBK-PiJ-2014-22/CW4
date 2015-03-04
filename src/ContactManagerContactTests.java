@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -90,18 +91,67 @@ public class ContactManagerContactTests {
 		assertArrayEquals(expected, actual);
 		
 	}
-			
-	 
-	 /*
-	 * get contact(string) tests
-	 * 
-	 * 1) Null string
-	 * 2) String matches 1 contact
-	 * 3) String matches multiple contacts
-	 * 4) String does not match contacts
-	 * 5) There are no contact
-	 * 
-	 */
+	
+	@Test(expected = NullPointerException.class)
+	public void getContactNullString(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
+		
+		String search = null;
+		cm.getContacts(search);
+	}
+	
+	public void getContactStringMatches1(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
+		
+		Set<Contact> returned = cm.getContacts("9");
+		
+		Object[] expected = {new ContactImpl(9, "Test Name9", "Test Notes9")};
+		Object[] actual = returned.toArray();
+		
+		assertArrayEquals(expected, actual);
+	}
+	
+	public void getContactStringMatchesMultiple(){
+		
+		cm.addNewContact("Search Name0" , 	"Search Notes0");
+		cm.addNewContact("NoMatch Name1", 	"NoMatch Notes1");
+		cm.addNewContact("Search Name2" , 	"Search Notes2");
+		cm.addNewContact("Search Name3" , 	"Search Notes3");
+		cm.addNewContact("NoMatch Name4", 	"NoMatch Notes4");
+		cm.addNewContact("Search Name5" , 	"Search Notes5");
+		
+		Set<Contact> returned = cm.getContacts("Search");
+		
+		Object[] expected = {new ContactImpl(0, "Search Name0", "Search Notes 0"),
+							 new ContactImpl(2, "Search Name2", "Search Notes 2"),
+							 new ContactImpl(3, "Search Name3", "Search Notes 3"),
+							 new ContactImpl(5, "Search Name5", "Search Notes 5")};
+		
+		Object[] actual = returned.toArray();
+		
+		assertArrayEquals(expected, actual);
+					               
+	}
+
+
+	
+	public void getContactStringMatchesNone(){
+		addXContacts(cm, 9, "Test Name", "Test Notes");
+		
+		Set<Contact> expected = new HashSet<Contact>();
+		Set<Contact> actual = cm.getContacts("NeverGoingToFindThis");
+		
+		assertEquals(expected, actual);
+	}
+	
+	public void getContactStringNoContacts(){
+		
+		Set<Contact> expected = new HashSet<Contact>();
+		Set<Contact> actual = cm.getContacts("NeverGoingToFindThis");
+		
+		assertEquals(expected, actual);
+
+	}
 	
 	private static void addXContacts(ContactManager cm, int x, String namestem, String notestem){
 		for (int i = 0; i <= x ; i++){
