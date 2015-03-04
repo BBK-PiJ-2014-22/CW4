@@ -12,8 +12,8 @@ public class ContactManagerImpl implements ContactManager {
 	List<Contact> contactlist;
 	
 	
-	public void ContactMangerImpl(){
-		contactlist = new ArrayList<Contact>();
+	public ContactManagerImpl(){
+		this.contactlist = new ArrayList<Contact>();
 	}
 	
 	
@@ -76,7 +76,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		contactlist.add(new ContactImpl(contactlist.size(), name, notes));
+		this.contactlist.add(new ContactImpl(0, name, notes));
 
 	}
 

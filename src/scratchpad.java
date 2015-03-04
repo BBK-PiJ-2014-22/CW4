@@ -11,6 +11,13 @@ public class scratchpad {
 		
 		for (Object datum : data)
 			System.out.println(datum);
+		
+		
+		ContactManager cm = new ContactManagerImpl();
+		
+		cm.addNewContact("Bob", "Notes");
+		
+		
 	
 		
 	//Calendar old = new GregorianCalendar();
