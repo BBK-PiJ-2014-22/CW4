@@ -28,9 +28,9 @@ public class ContactManagerContactTests {
 		
 		cm.addNewContact((String)testdata[1], (String)testdata[2]);
 		
-		Set<Contact> actual = cm.getContacts(0);
+		Object[] actual = cm.getContacts(0).toArray();
 		
-		assertEquals(expected, actual);
+		assertArrayEquals(expected, actual);
 	}
 	
 	@Test
