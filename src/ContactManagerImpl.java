@@ -76,7 +76,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		this.contactlist.add(new ContactImpl(0, name, notes));
+		this.contactlist.add(new ContactImpl(this.contactlist.size(), name, notes));
 
 	}
 

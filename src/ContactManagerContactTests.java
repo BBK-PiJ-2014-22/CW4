@@ -21,12 +21,12 @@ public class ContactManagerContactTests {
 	public void addAndGetNormalContact(){
 	
 		
-		Set<Contact> expected = new HashSet<Contact>();
-		
 		Object[] testdata = {0,"Test Name", "Test Notes"};
-	
+		Object[] expected = {new ContactImpl((Integer)testdata[0], (String)testdata[1], (String)testdata[2])};
+		
+		
+		
 		cm.addNewContact((String)testdata[1], (String)testdata[2]);
-		expected.add(new ContactImpl((Integer)testdata[0], (String)testdata[1], (String)testdata[2]));
 		
 		Set<Contact> actual = cm.getContacts(0);
 		
