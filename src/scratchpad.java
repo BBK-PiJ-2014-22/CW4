@@ -1,24 +1,34 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class scratchpad {
 
 	public static void main(String[] args){
 	
-	
-		Object[] data = collateTestData("1",1,'1');
+		List<Integer> original = Arrays.asList(1,2,3,4,5,6,7,8);
+		Integer[] filter = {2,3};
 		
-		for (Object datum : data)
-			System.out.println(datum);
+
+		
+		Set<Object> result = original.stream()
+                .filter(number -> Arrays.asList(filter).contains(number))
+                .collect(Collectors.toSet());
+
+		System.out.println(result);
 		
 		
-		ContactManager cm = new ContactManagerImpl();
+		/*
+		ContactManagerImpl cm = new ContactManagerImpl();
 		
 		cm.addNewContact("Bob", "Notes");
 		
-		
-	
+		System.out.println(cm.contactlist);
+	*/
 		
 	//Calendar old = new GregorianCalendar();
 	//	old.add(Calendar.MONTH, -1);	

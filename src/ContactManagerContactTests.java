@@ -28,7 +28,7 @@ public class ContactManagerContactTests {
 		cm.addNewContact((String)testdata[1], (String)testdata[2]);
 		expected.add(new ContactImpl((Integer)testdata[0], (String)testdata[1], (String)testdata[2]));
 		
-		Set<Contact> actual = cm.getContacts((Integer)testdata[0]);
+		Set<Contact> actual = cm.getContacts(0);
 		
 		assertEquals(expected, actual);
 	}
