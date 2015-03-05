@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -120,17 +121,30 @@ public class ContactManagerContactTests {
 		cm.addNewContact("NoMatch Name4", 	"NoMatch Notes4");
 		cm.addNewContact("Search Name5" , 	"Search Notes5");
 		
-		Set<Contact> returned = cm.getContacts("Search");
+		List<Contact> returned = new ArrayList<Contact>();
+		returned.addAll(cm.getContacts("Search"));
 		
-		Object[] expected = {new ContactImpl(0, "Search Name0", "Search Notes 0"),
-							 new ContactImpl(2, "Search Name2", "Search Notes 2"),
-							 new ContactImpl(3, "Search Name3", "Search Notes 3"),
-							 new ContactImpl(5, "Search Name5", "Search Notes 5")};
+		List<Contact> expected = Arrays.asList(new ContactImpl(0, "Search Name0", "Search Notes0"),
+							 new ContactImpl(2, "Search Name2", "Search Notes2"),
+							 new ContactImpl(3, "Search Name3", "Search Notes3"),
+							 new ContactImpl(5, "Search Name5", "Search Notes5"));
 		
-		Object[] actual = returned.toArray();
+		List<Contact> missingContacts = new ArrayList<Contact>();
+		List<Contact> extraContacts = new ArrayList<Contact>();
 		
-		assertArrayEquals(expected, actual);
-					               
+		for (Contact returnedContact : returned){
+			if (!expected.contains(returnedContact))
+				missingContacts.add(returnedContact);
+		}
+		
+		for (Contact expectedContact : expected){
+			if (!returned.contains(expectedContact))
+				extraContacts.add(expectedContact);
+		}
+		
+		assertTrue((String)("Missing Contacts: "+missingContacts +
+				            "Extra Contacts: "+extraContacts),
+				            missingContacts.size() == 0 && extraContacts.size() == 0);			               
 	}
 
 
