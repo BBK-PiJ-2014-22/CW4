@@ -16,14 +16,23 @@ public class scratchpad {
 											   new ContactImpl(3,"3","3"));
 		Integer[] filter = {2,3};
 		
+		
+		System.out.println(Arrays.asList(filter).get(0));
+		
 		for (Contact contact : original){
 			System.out.println(Arrays.asList(filter).contains(contact.getId()));
 		}
-
-	
+		
+		for (Contact contact : original){
+			System.out.println(contact.getId() == 0);
+		}
+		
+		ContactManagerImpl cm = new ContactManagerImpl();
+		
+		System.out.println(cm.contactInList(original.get(2), Arrays.asList(filter)));
 		
 		Set<Object> result = original.stream()
-                .filter(number -> Arrays.asList(filter).contains(number))
+                .filter(number -> true)
                 .collect(Collectors.toSet());
 
 		System.out.println(result);
@@ -72,11 +81,6 @@ public class scratchpad {
 		return day + "/"+month+"/"+year;
 				
 	}
-	
-	private static Object[] collateTestData(Object... data){
-		return data;
-	}
-	
 }
 
 

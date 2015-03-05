@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -82,10 +83,17 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(int... ids) {
+	
+		List<Integer> filter = new ArrayList<Integer>();
+		
+		for (int i : ids){
+			filter.add(i);
+		}
+		
 		Set<Contact> result = contactlist.stream()
-				                         .filter(contact -> Arrays.asList(ids).contains(contact.getId()))			       
+				                         .filter(contact -> contactInList(contact, filter))			       
 				                         .collect(Collectors.toSet());
-										 
+									 
 		return result;              
 	}
 
@@ -101,4 +109,9 @@ public class ContactManagerImpl implements ContactManager {
 
 	}
 
+	public boolean contactInList(Contact contact, List list){
+		return list.contains(contact.getId());
+	}
+	
 }
+
