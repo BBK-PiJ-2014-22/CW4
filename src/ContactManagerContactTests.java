@@ -110,6 +110,7 @@ public class ContactManagerContactTests {
 		assertArrayEquals(expected, actual);
 	}
 	
+	@Test
 	public void getContactStringMatchesMultiple(){
 		
 		cm.addNewContact("Search Name0" , 	"Search Notes0");
@@ -133,7 +134,7 @@ public class ContactManagerContactTests {
 	}
 
 
-	
+	@Test
 	public void getContactStringMatchesNone(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
 		
@@ -143,6 +144,7 @@ public class ContactManagerContactTests {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void getContactStringNoContacts(){
 		
 		Set<Contact> expected = new HashSet<Contact>();
