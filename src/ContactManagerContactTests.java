@@ -1,6 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -76,17 +78,17 @@ public class ContactManagerContactTests {
 		
 		String namestem = "Test Name";
 		String notestem = "Test Notes";
-		int c1 = 7;
-		int c2 = 8;
+		int contact1 = 7;
+		int contact2 = 8;
 		
 		addXContacts(cm, 9, namestem, notestem);
-		Set<Contact> returned = cm.getContacts(c1, c2);
+		Set<Contact> returned = cm.getContacts(contact1, contact2);
+		
 		Object[] actual = returned.toArray();
-		Object[] expected = {new ContactImpl(c1, namestem+c1, notestem+c1),
-							 new ContactImpl(c2, namestem+c2, notestem+c2)};
-		
+		Object[] expected = {new ContactImpl(contact1, namestem+contact1, notestem+contact1),
+				             new ContactImpl(contact2, namestem+contact2, notestem+contact2)};
+							
 		assertArrayEquals(expected, actual);
-		
 	}
 	
 	@Test(expected = NullPointerException.class)
