@@ -86,15 +86,16 @@ public class ContactManagerImpl implements ContactManager {
 	
 		List<Integer> filter = new ArrayList<Integer>();
 		
-		for (int i : ids){
+		for (int i : ids)
 			filter.add(i);
-		}
 		
 		Set<Contact> result = contactlist.stream()
 				                         .filter(contact -> contactInList(contact, filter))			       
 				                         .collect(Collectors.toSet());
-									 
-		return result;              
+		if (ids.length > result.size())
+			throw new IllegalArgumentException();
+		else
+			return result;              
 	}
 
 	@Override
