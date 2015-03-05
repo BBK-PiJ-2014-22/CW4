@@ -11,8 +11,12 @@ public class ContactImpl implements Contact {
 	 * @param id contact ID
 	 * @param name Name of the contact
 	 * @param notes Notes about interaction with contact
+	 * @throws NullPointerException if Name or Notes is null
 	 */
 	public ContactImpl(int id, String name, String notes){
+		if (name == null || notes == null)
+			throw new NullPointerException();
+		
 		this.id = id;
 		this.name = name;
 		this.notes = notes;
