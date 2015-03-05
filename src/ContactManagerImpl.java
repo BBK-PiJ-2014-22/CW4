@@ -89,9 +89,9 @@ public class ContactManagerImpl implements ContactManager {
 		for (int i : ids)
 			filter.add(i);
 		
-		Set<Contact> result = contactlist.stream()
-				                         .filter(contact -> contactInList(contact, filter))			       
-				                         .collect(Collectors.toSet());
+		Set<Contact> result = this.contactlist.stream()
+											  .filter(contact -> contactInList(contact, filter))			       
+											  .collect(Collectors.toSet());
 		if (ids.length > result.size())
 			throw new IllegalArgumentException();
 		else
@@ -100,8 +100,13 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		if (name == null)
+			throw new NullPointerException();
+		else{
+			return this.contactlist.stream()
+								   .filter(contact -> contact.getName().contains((CharSequence)name))
+								   .collect(Collectors.toSet());
+		}		
 	}
 
 	@Override

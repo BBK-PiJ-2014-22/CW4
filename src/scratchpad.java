@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,7 +11,30 @@ public class scratchpad {
 
 	public static void main(String[] args){
 	
-		List<Contact> original = Arrays.asList(new ContactImpl(0,"0","0"),
+		Contact contact0 = new ContactImpl(0,"Name 0", "Notes 0");
+		Contact contact1 = new ContactImpl(1,"Name 1", "Notes 1");
+		Contact contact0b = new ContactImpl(0,"Name 0", "Notes 0");
+		Contact contact1b = new ContactImpl(1,"Name 1", "Notes 1");
+		
+		Set<Contact> setreference1 = new HashSet<Contact>();
+		Set<Contact> setreference2 = new HashSet<Contact>();
+		Set<Contact> setvalue = new HashSet<Contact>();
+		
+		setreference1.add(contact0);
+		setreference1.add(contact1);
+
+		setreference2.add(contact0);
+		setreference2.add(contact1);
+		
+		setvalue.add(contact1b);
+		setvalue.add(contact0b);
+		
+		System.out.println(setreference1.equals(setreference2));
+		System.out.println(setreference1.equals(setvalue));
+		System.out.println(contact0.equals(contact0b));
+		System.out.println(contact1.equals(contact1b));
+		
+		/*List<Contact> original = Arrays.asList(new ContactImpl(0,"0","0"),
 											   new ContactImpl(1,"1","1"),
 											   new ContactImpl(2,"2","2"),
 											   new ContactImpl(3,"3","3"));
@@ -36,7 +60,7 @@ public class scratchpad {
                 .collect(Collectors.toSet());
 
 		System.out.println(result);
-		
+		*/
 		
 		/*
 		ContactManagerImpl cm = new ContactManagerImpl();
