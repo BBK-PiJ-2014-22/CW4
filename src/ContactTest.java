@@ -37,6 +37,16 @@ public class ContactTest {
 		contact = new ContactImpl(targetID, targetName, targetNotes);
 	}
 
+	@Test(expected = NullPointerException.class)
+	public void testNullNameConstructor(){
+		new ContactImpl(targetID, null, targetNotes);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testNullNotesConstructor(){
+		new ContactImpl(targetID, targetName, null);
+	}
+	
 	@Test
 	public void testGetID() {
 		assertEquals(targetID, contact.getId());
