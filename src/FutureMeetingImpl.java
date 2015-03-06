@@ -6,7 +6,7 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
 
 	public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		
-		//TODO - add constructor exceptions
+		//TODO - add constructor exceptions, copyconstructo
 
 		super(id, date, contacts);
 		}
