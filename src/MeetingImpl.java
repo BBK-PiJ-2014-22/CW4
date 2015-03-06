@@ -33,6 +33,7 @@ public class MeetingImpl implements Meeting {
 		return this.contacts;
 	}
 	
+	//TODO - rewrite to make exact meeting matches.
 	@Override
 	public boolean equals(Object object){
 		try{
