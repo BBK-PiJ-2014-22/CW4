@@ -59,19 +59,59 @@ public class ContactManagerMeetingTest {
 	
 	/**AFMTest4 - Contact set is null, date is in the future
 	 * 
-	 * Should return NullPointException
+	 *Should work (by spec)
 	 * 
 	 */
-	@Test(expected = NullPointerException.class)
+	//TODO - may need changing if answer on Forum comes back that this should result in null pointer exception
+	@Test
 	public void AFM4NullSetFutureMeeting(){
-		
+		Calendar meetingdate = TestTools.createCalendar(1);
+		cm.addFutureMeeting(null, meetingdate);
+		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, null);
+		assertEquals(expected, cm.getFutureMeeting(0));
 	}
 	
-	//Test4- null, date in the future
-	//Test5- Some Contacts not in CM, date in the future
-	//Test6- all contacts not in CM, date in the future
-	//Test5- Working set,  date in the past
-	//Test5- Working set,  date is today
+	/**AFMTest5- Some of the Contacts added are not in CM, date in the future
+	 * 
+	 * Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void AFM5SomeContactsNotInCM(){
+		Set<Contact> contacts = cm.getContacts(0,1,2);
+		contacts.add(new ContactImpl(100, "Notin CRM", "This Should Break"));
+		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
+	}
+
+	/**AFMTest6- all contacts to add are not in CM, date in the future
+	 * 
+	 * Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void AFM6NoContactsNotInCM(){
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(new ContactImpl(100, "Notin CRM1", "This Should Break"));
+		contacts.add(new ContactImpl(101, "Notin CRM2", "This Should Break"));
+		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
+	}
+
+	/**AFMTest7- Contact set works, but the date is in the past.
+	 * 
+	 *Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void AFM7PastDate(){
+		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(-1));
+	}
+	
+	/**AFMTest8- Contact set works, but the date is today.
+	 * 
+	 *Should result in IllegalArgumentException
+	 */
+	//TODO - double check this is the case. Might be ok.
+	@Test(expected = IllegalArgumentException.class)
+	public void AFM8TodaysDate(){
+		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(0));
+	}
 	//Test6- multiple working meetings, test ID increases
 	//Test7- multiple working meetings with some failures, test no extra IDs
 	
