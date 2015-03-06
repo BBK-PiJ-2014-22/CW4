@@ -1,5 +1,11 @@
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,16 +20,53 @@ public class ContactManagerMeetingTest {
 		for (int i = 0; i < 10 ; i++){
 			cm.addNewContact("Name "+i, "Notes "+i);
 		}
-		
-		
-		//TODO - Needs to create a CM instance
-		//TODO - needs to create a list of 10 contacts to use for tests
 	}
 
-	//TODO - Add Future meetings Tests
-	//Test1- Single existing contact, date in the future
-	//Test2- multiple existing contacts, date in the future
-	//Test3- Empty set of contacts, date in the future
+	//addFutureMeeting() Tests (AFM for short)
+	/**AFMTest1 - Tests the base case - a  single FutureMeeting in the Future with a single contact
+	 * 
+	 * Should result in a meeting matching the test parameters
+	 */
+	@Test
+	public void AFM1singleContactFutureDate(){
+		Calendar meetingdate = TestTools.createCalendar(1);
+		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
+		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, cm.getContacts(0));
+		assertEquals(expected, cm.getFutureMeeting(0));
+	}
+	
+	/**AFMTest2 - Tests a meeting that has had multiple, existing contacts added to it. Date in the future
+	 * 
+	 * Should result in a meeting with several contacts allocated to it.
+	 */
+	@Test
+	public void AFM2multiContactFutureDate(){
+		Calendar meetingdate = TestTools.createCalendar(1);
+		cm.addFutureMeeting(cm.getContacts(0,1,2,3), meetingdate);
+		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, cm.getContacts(0,1,2,3));
+		assertEquals(expected, cm.getFutureMeeting(0));
+	}
+	
+	/**AFMTest3- Empty set of contacts, date in the future
+	 */
+	@Test
+	public void AFM3emptySetFutureDate(){
+		Calendar meetingdate = TestTools.createCalendar(1);
+		cm.addFutureMeeting(new HashSet<Contact>(), meetingdate);
+		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, new HashSet<Contact>());
+		assertEquals(expected, cm.getFutureMeeting(0));
+	}
+	
+	/**AFMTest4 - Contact set is null, date is in the future
+	 * 
+	 * Should return NullPointException
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void AFM4NullSetFutureMeeting(){
+		
+	}
+	
 	//Test4- null, date in the future
 	//Test5- Some Contacts not in CM, date in the future
 	//Test6- all contacts not in CM, date in the future
@@ -48,7 +91,7 @@ public class ContactManagerMeetingTest {
 	
 	
 	//TODO - Get Future Meeting Tests
-	//Test1- ID Matches future meeting
+	//Test1- ID Matches future meeting - INCLUDED IN ADD TESTS
 	//Test2- ID matches past meeting
 	//Test3- ID Matches no meeting
 	

@@ -11,6 +11,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	
 	List<Contact> contactlist;
+	List<Meeting> meetinglist;
 	
 	
 	public ContactManagerImpl(){
