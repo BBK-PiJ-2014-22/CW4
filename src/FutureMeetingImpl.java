@@ -4,9 +4,11 @@ import java.util.Set;
 
 
 public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
-	
-	//TODO - add constructor exceptions, copyconstructo
 
+	/**{@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException if date is in the past or present
+	 */
 	public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts){	
 		super(id, date, contacts);
 		if (date.compareTo(new GregorianCalendar()) <= 0 )
