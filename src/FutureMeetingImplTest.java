@@ -11,6 +11,9 @@ public class FutureMeetingImplTest {
 	@Before
 	public void setUp() throws Exception {
 	}
+	
+	/**Tests that will throw an IllegalArgumentException with a date in the past	 * 
+	 */
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorPastDate() {
