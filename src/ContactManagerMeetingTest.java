@@ -122,7 +122,7 @@ public class ContactManagerMeetingTest {
 	public void AFM9MultipleMeetings(){
 
 		for (int i = 0; i < 10 ; i ++)
-			cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(i));
+			cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(1));
 
 		Meeting expected = new MeetingImpl(9, TestTools.createCalendar(9), cm.getContacts(9));
 		assertEquals(expected, cm.getFutureMeeting(9));
