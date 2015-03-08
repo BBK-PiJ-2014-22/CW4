@@ -112,8 +112,21 @@ public class ContactManagerMeetingTest {
 	public void AFM8TodaysDate(){
 		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(0));
 	}
-	//Test6- multiple working meetings, test ID increases
-	//Test7- multiple working meetings with some failures, test no extra IDs
+	
+	/**AFMTest9 - Multiple meetings added. Tests that the meeting ID increases
+	 * 
+	 * Should result in final meeting matching the last added with and ID of 10
+	 */
+	@Test
+	public void AFM9MultipleMeetings(){
+
+		for (int i = 0; i < 10 ; i ++)
+			cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(i));
+
+		Meeting expected = new MeetingImpl(9, TestTools.createCalendar(9), cm.getContacts(9));
+		assertEquals(expected, cm.getFutureMeeting(9));
+	}
+	
 	
 	//TODO - Add Past meetings Tests
 	//Test1- Single existing contact, date in the past, notes work
@@ -126,12 +139,11 @@ public class ContactManagerMeetingTest {
 	//Test5- Working set,  date is today, notes work
 	//Test6- multiple working meetings, test ID increases
 	//Test7- multiple working meetings with some failures, test no extra IDs
-	//Test8 Single existing contact, date in the past, null notes
-	//Test8 Single existing contact, null date, notes work
+	//Test9- Single existing contact, date in the past, null notes
+	//Test10-Single existing contact, null date, notes work
 	
 	
 	//TODO - Get Future Meeting Tests
-	//Test1- ID Matches future meeting - INCLUDED IN ADD TESTS
 	//Test2- ID matches past meeting
 	//Test3- ID Matches no meeting
 	
