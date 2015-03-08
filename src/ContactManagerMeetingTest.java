@@ -78,7 +78,8 @@ public class ContactManagerMeetingTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void AFM5SomeContactsNotInCM(){
 		Set<Contact> contacts = cm.getContacts(0,1,2);
-		contacts.add(new ContactImpl(100, "Notin CRM", "This Should Break"));
+		//Note below contact is equal but not identical to contacts in CM. Need to be the same object
+		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
 		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
 	}
 
