@@ -28,14 +28,11 @@ public class ContactManagerImpl implements ContactManager {
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		
 		//Tests to see if each contact in the set is in the CRM system
-		//Note that the use of == over equals() is intentional
+		if (contacts != null)
 		for (Contact contact : contacts){
-			for (Contact contactInCRM : this.contactlist){
-				if (contact == contactInCRM)
-					break;
-			}
-			//Will throw iff a contact does not match any of the contacts in the system
-			throw new IllegalArgumentException();
+			if (!contactIsInCRM(contact)){
+				throw new IllegalArgumentException();
+			}		
 		}
 		
 		Meeting toAdd = new FutureMeetingImpl(this.meetinglist.size(), date, contacts);
@@ -185,9 +182,20 @@ public class ContactManagerImpl implements ContactManager {
 	/**{@inheritDoc} 
 	 * 
 	 */
-	public boolean findContactsWithIDs(Contact contact, List<Integer> idList){
+	private boolean findContactsWithIDs(Contact contact, List<Integer> idList){
 		return idList.contains(contact.getId());
 	}
+	
+	private boolean contactIsInCRM(Contact contact){
+	
+		for (Contact contactInCRM : this.contactlist){
+			if (contact == contactInCRM){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 }
 
