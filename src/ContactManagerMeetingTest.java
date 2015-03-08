@@ -142,6 +142,8 @@ public class ContactManagerMeetingTest {
 	//Test9- Single existing contact, date in the past, null notes
 	//Test10-Single existing contact, null date, notes work
 	
+	//TODO - Add Get Meeting Tests
+	
 	
 	//TODO - Get Future Meeting Tests
 	//Test2- ID matches past meeting

@@ -3,6 +3,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,18 +18,34 @@ public class ContactManagerImpl implements ContactManager {
 	
 	public ContactManagerImpl(){
 		this.contactlist = new ArrayList<Contact>();
+		this.meetinglist = new ArrayList<Meeting>();
 	}
 	
 	
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		// TODO Auto-generated method stub
-		return 0;
+		Meeting toAdd = new FutureMeetingImpl(this.meetinglist.size(), date, contacts);
+		this.meetinglist.add(toAdd);
+		return toAdd.getId();
 	}
 	
 	@Override
-	public void addNewPastMeeting(Set<Contact> contacts, Calendar date,
-			String text) {
+	public FutureMeeting getFutureMeeting(int id) {
+		Meeting toReturn = this.getMeeting(id);
+		if (toReturn == null)
+			return null;
+		else{
+			try{			
+				return (FutureMeeting) this.getMeeting(id);
+			}catch (ClassCastException ex){
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
+	
+	@Override
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		// TODO Auto-generated method stub
 
 	}
@@ -38,16 +56,17 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
-	@Override
-	public FutureMeeting getFutureMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Meeting getMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Meeting> returned = this.meetinglist.stream()
+				 .filter(meeting -> meeting.getId() == (id))
+				 .findFirst();
+			try{
+				return returned.get();
+			}catch (NoSuchElementException ex){
+				return null;
+			}
 	}
 
 	@Override
