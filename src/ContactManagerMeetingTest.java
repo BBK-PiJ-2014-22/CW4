@@ -78,7 +78,7 @@ public class ContactManagerMeetingTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void AFM5SomeContactsNotInCM(){
 		Set<Contact> contacts = cm.getContacts(0,1,2);
-		//Note below contact is equal but not identical to contacts in CM. Need to be the same object
+		//Note that the below contact is equal but not identical to contacts in CM. Need to be the same object
 		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
 		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
 	}
@@ -114,23 +114,53 @@ public class ContactManagerMeetingTest {
 		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(0));
 	}
 	
-	/**AFMTest9 - Multiple meetings added. Tests that the meeting ID increases
+	/**AFMTest9 - Multiple meetings added. Tests that the meeting ID increases,
+	 * and that the AFM method returns correctly.
 	 * 
-	 * Should result in final meeting matching the last added with and ID of 10
+	 * Should result in an array of numbers 0 - 9
 	 */
 	@Test
 	public void AFM9MultipleMeetings(){
 
+		int[] actual = new int[9];
+		
 		for (int i = 0; i < 10 ; i ++)
-			cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(1));
+			actual[i] = cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(1));
 
-		Meeting expected = new MeetingImpl(9, TestTools.createCalendar(9), cm.getContacts(9));
-		assertEquals(expected, cm.getFutureMeeting(9));
+		int[] expected = {0,1,2,3,4,5,6,7,8,9};
+		
+		assertEquals(expected, actual));
 	}
 	
+	//AddPastMeeting() Tests (APM for short)
+	
+	/**APMTest1 - Tests the base case - a  single PastMeeting in the past with a single contact
+	 * 
+	 * Should result in a meeting matching the test parameters
+	 */
+	@Test
+	public void APM1singleContactPastDate(){
+		Calendar meetingdate = TestTools.createCalendar(-1);
+		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
+		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
+		assertEquals(expected, cm.getFutureMeeting(0));
+	}
+	
+	/**APMTest2 - a  single PastMeeting in the past with multiple contacts
+	 * 
+	 * Should result in a meeting matching the test parameters
+	 */
+	@Test
+	public void APM2MultiContactPastDate(){
+		Calendar meetingdate = TestTools.createCalendar(-1);
+		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
+		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
+		assertEquals(expected, cm.getFutureMeeting(0));
+	
+		
+		
 	
 	//TODO - Add Past meetings Tests
-	//Test1- Single existing contact, date in the past, notes work
 	//Test2- multiple existing contacts, date in the past, notes work
 	//Test3- Empty set of contacts, date in the past, notes work
 	//Test4- null, date in the past, notes work
