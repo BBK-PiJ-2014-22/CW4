@@ -132,7 +132,7 @@ public class ContactManagerMeetingTest {
 		assertArrayEquals(expected, actual);
 	}
 	
-	//AddPastMeeting() Tests (APM for short)
+	//***AddPastMeeting() Tests (APM for short)***
 	
 	/**APMTest1 - Tests the base case - a  single PastMeeting in the past with a single contact
 	 * 
@@ -187,7 +187,7 @@ public class ContactManagerMeetingTest {
 		cm.addNewPastMeeting(cm.getContacts(0), null, "Notes");
 	}	
 	
-	/**APMTest5 -null notes, date and contacts work
+	/**APMTest6 -null notes, date and contacts work
 	 * 
 	 * Should result in a null pointer exception
 	 */
@@ -196,18 +196,59 @@ public class ContactManagerMeetingTest {
 		new PastMeetingImpl(0, TestTools.createCalendar(-1),null);
 	}	
 	
+	/**APMTest7- Some of the Contacts added are not in CM, date in the past
+	 * 
+	 * Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void APM7SomeContactsNotInCM(){
+		Set<Contact> contacts = cm.getContacts(0,1,2);
+		//Note that the below contact is equal but not identical to contacts in CM.
+		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
+		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+	}
+
+	/**APMTest8- all contacts to add are not in CM, date in the past
+	 * 
+	 * Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void APM8NoContactsNotInCM(){
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(new ContactImpl(100, "Notin CRM1", "This Should Break"));
+		contacts.add(new ContactImpl(101, "Notin CRM2", "This Should Break"));
+		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+	}
 	
+	/**APMTest9- Date is in the future
+	 * 
+	 * Should result in IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void APM9DateInFuture(){
+		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendar(1), "Notes");
+	}
+	
+	/**APMTest10- Date is today
+	 * 
+	 * Should parse as normal
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void APM10DateIsToday(){
+		Calendar meetingdate = TestTools.createCalendar(0);
+		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
+		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
+		assertEquals(expected, cm.getFutureMeeting(0));
+	}
 	
 	//TODO - Add Past meetings Tests
 	
-	//Test5- Some Contacts not in CM, date in the past, notes work
-	//Test6- all contacts not in CM, date in the past, notes work
-	//Test5- Working set,  date in the future, notes work
-	//Test5- Working set,  date is today, notes work
-	//Test6- multiple working meetings, test ID increases
-	//Test7- multiple working meetings with some failures, test no extra IDs
-	//Test9- Single existing contact, date in the past, null notes
-	//Test10-Single existing contact, null date, notes work
+
+	//Test10- Working set,  date is today, notes work
+	//Test11- multiple working meetings, test ID increases
+	//Test12- multiple working meetings with some failures, test no extra IDs
+	//Test13- Single existing contact, date in the past, null notes
+	//Test14-Single existing contact, null date, notes work
 	
 	//TODO - Add Get Meeting Tests
 	
@@ -243,7 +284,7 @@ public class ContactManagerMeetingTest {
 	//Test5- contact does not exist
 	
 	
-	//TODO - getPasteMeetingList(Date) tests (Note: Check order)
+	//TODO - getPastMeetingList(Date) tests (Note: Check order)
 	//Test1- Date matches to past meeting
 	//Test2- date matches to multiple past meetings
 	//Test3- Date does not match to any past meetings
