@@ -179,7 +179,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	}
 	
-	/**{@inheritDoc} 
+	/**
 	 * 
 	 */
 	private boolean findContactsWithIDs(Contact contact, List<Integer> idList){

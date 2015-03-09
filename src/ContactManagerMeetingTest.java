@@ -122,14 +122,14 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void AFM9MultipleMeetings(){
 
-		int[] actual = new int[9];
+		int[] actual = new int[10];
 		
 		for (int i = 0; i < 10 ; i ++)
 			actual[i] = cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(1));
 
 		int[] expected = {0,1,2,3,4,5,6,7,8,9};
 		
-		assertEquals(expected, actual));
+		assertArrayEquals(expected, actual);
 	}
 	
 	//AddPastMeeting() Tests (APM for short)
@@ -141,7 +141,7 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void APM1singleContactPastDate(){
 		Calendar meetingdate = TestTools.createCalendar(-1);
-		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
+		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
 		assertEquals(expected, cm.getFutureMeeting(0));
 	}
@@ -153,17 +153,53 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void APM2MultiContactPastDate(){
 		Calendar meetingdate = TestTools.createCalendar(-1);
-		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
+		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
 		assertEquals(expected, cm.getFutureMeeting(0));
+	}
 	
-		
-		
+	/**APMTest3 - Empty set of contacts, date in the past, notes work
+	 * 
+	 * Should result in am illegal argument exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void APM3EmptyContactsPastDate(){
+		cm.addNewPastMeeting((Set<Contact>)new HashSet<Contact>(),
+				              TestTools.createCalendar(-1),
+				              "Notes");
+	}	
+	
+	/**APMTest4 -null for contact set, date in the past, notes work
+	 * 
+	 * Should result in a null pointer exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void APM4NullContactsPastDate(){
+		cm.addNewPastMeeting(null, TestTools.createCalendar(-1), "Notes");
+	}
+	
+	/**APMTest5 -null for calendar, contacts and notes work
+	 * 
+	 * Should result in a null pointer exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void APM5NullCalendarPastDate(){
+		cm.addNewPastMeeting(cm.getContacts(0), null, "Notes");
+	}	
+	
+	/**APMTest5 -null notes, date and contacts work
+	 * 
+	 * Should result in a null pointer exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void APM6NullNotesPastDate(){
+		new PastMeetingImpl(0, TestTools.createCalendar(-1),null);
+	}	
+	
+	
 	
 	//TODO - Add Past meetings Tests
-	//Test2- multiple existing contacts, date in the past, notes work
-	//Test3- Empty set of contacts, date in the past, notes work
-	//Test4- null, date in the past, notes work
+	
 	//Test5- Some Contacts not in CM, date in the past, notes work
 	//Test6- all contacts not in CM, date in the past, notes work
 	//Test5- Working set,  date in the future, notes work
