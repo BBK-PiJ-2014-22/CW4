@@ -1,9 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -13,9 +11,12 @@ public class ContactManagerMeetingTest {
 
 	ContactManager cm;
 	
+	/**Sets up a new ContactManager with 10 contacts to use
+	 * 
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
-		
 		this.cm = new ContactManagerImpl();
 		for (int i = 0; i < 10 ; i++){
 			cm.addNewContact("Name "+i, "Notes "+i);

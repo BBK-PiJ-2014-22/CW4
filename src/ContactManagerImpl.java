@@ -62,8 +62,11 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		// TODO Auto-generated method stub
-
+		if (contacts == null ||	date == null ||	text == null){
+			throw new NullPointerException();
+		}else{
+			
+		}
 	}
 
 	/**{@inheritDoc} 
@@ -71,9 +74,18 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public PastMeeting getPastMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		//TODO Refactor for DRY with getFutureMeeting (perhaps use generics?)	
+		Meeting toReturn = this.getMeeting(id);
+		if (toReturn == null)
+			return null;
+		else{
+			try{			
+				return (PastMeeting) this.getMeeting(id);
+			}catch (ClassCastException ex){
+				throw new IllegalArgumentException();
+			}
+		}
+	}	
 
 
 	/**{@inheritDoc} 
@@ -186,14 +198,24 @@ public class ContactManagerImpl implements ContactManager {
 		return idList.contains(contact.getId());
 	}
 	
+	/**
+	 * 
+	 * @param contact
+	 * @return
+	 */
 	private boolean contactIsInCRM(Contact contact){
-	
 		for (Contact contactInCRM : this.contactlist){
-			if (contact == contactInCRM){
+			if (contact == contactInCRM)
 				return true;
-			}
 		}
 		return false;
+	}
+	
+	private boolean contactSetInCRM(Set<Contact> contacts){
+		for (Contact contact : contacts)
+			if (!contactIsInCRM(contact))
+				return false;
+		return true;
 	}
 	
 	
