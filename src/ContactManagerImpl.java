@@ -67,6 +67,9 @@ public class ContactManagerImpl implements ContactManager {
 			throw new NullPointerException();
 		else if (this.contactSetInCRM(contacts))
 			this.meetinglist.add(new PastMeetingImpl(this.meetinglist.size(), date, contacts, text));
+		else{
+			throw new IllegalArgumentException();
+		}
 	}
 
 	/**{@inheritDoc} 

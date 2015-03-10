@@ -204,7 +204,7 @@ public class ContactManagerMeetingTest {
 	public void APM7SomeContactsNotInCM(){
 		Set<Contact> contacts = cm.getContacts(0,1,2);
 		//Note that the below contact is equal but not identical to contacts in CM.
-		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
+		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
 		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
 	}
 
