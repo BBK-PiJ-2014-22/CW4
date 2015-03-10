@@ -219,7 +219,7 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	private boolean contactSetInCRM(Set<Contact> contacts){
 		
-		if (contacts == null)
+		if (contacts == null || contacts.isEmpty())
 				throw new IllegalArgumentException();
 		
 		for (Contact contact : contacts)

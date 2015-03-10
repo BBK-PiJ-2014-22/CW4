@@ -165,9 +165,8 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void APM3EmptyContactsPastDate(){
-		cm.addNewPastMeeting((Set<Contact>)new HashSet<Contact>(),
-				              TestTools.createCalendar(-1),
-				              "Notes");
+		Set<Contact> emptySet = new HashSet<Contact>();
+		cm.addNewPastMeeting(emptySet,TestTools.createCalendar(-1),"Notes");
 	}	
 	
 	/**APMTest4 -null for contact set, date in the past, notes work
