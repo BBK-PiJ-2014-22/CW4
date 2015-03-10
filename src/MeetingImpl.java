@@ -2,12 +2,14 @@
 
 import java.util.Calendar;
 import java.util.Set;
+import java.text.SimpleDateFormat;
 
 public class MeetingImpl implements Meeting {
 	
-	int id;
-	Calendar date;
-	Set<Contact> contacts;
+	private int id;
+	private Calendar date;
+	private Set<Contact> contacts;
+	private SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy hh:mm");
 	
 	
 	
@@ -49,7 +51,7 @@ public class MeetingImpl implements Meeting {
 
 	@Override
 	public String toString() {
-		return "Meeting [id=" + id + ", date=" + date + ", contacts="
+		return "Meeting [id=" + id + ", date=" + sdf.format(date.getTime()) + ", contacts="
 				+ contacts + "]";
 	}
 

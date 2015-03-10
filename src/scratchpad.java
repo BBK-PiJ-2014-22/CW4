@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -13,6 +14,7 @@ public class scratchpad {
 		
 		
 
+		
 		ContactManager cm = new ContactManagerImpl();
 			for (int i = 0; i < 10 ; i++){
 				cm.addNewContact("Name "+i, "Notes "+i);
@@ -20,7 +22,7 @@ public class scratchpad {
 		
 		Set<Contact> contacts = cm.getContacts(0,1,2);
 		//Note that the below contact is equal but not identical to contacts in CM.
-		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
+		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
 		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
 		
 		System.out.println(cm.getMeeting(0));
