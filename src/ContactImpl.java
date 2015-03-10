@@ -50,6 +50,16 @@ public class ContactImpl implements Contact {
 		this.notes += "\n\n"+note;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((notes == null) ? 0 : notes.hashCode());
+		return result;
+	}
+
 	/**{@inheritDoc}
 	 * 
 	 * Contacts are equal to other contacts with the same ID else not
@@ -68,7 +78,6 @@ public class ContactImpl implements Contact {
 		}
 		return false;
 	}
-
 	/**{@inheritDoc}
 	 * 
 	 * Will display as [ID, Contact Name, Notes]
