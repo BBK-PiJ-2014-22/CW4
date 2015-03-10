@@ -27,6 +27,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		
+		//TODO - Refactor to use ContactSetInCRM
 		//Tests to see if each contact in the set is in the CRM system
 		if (contacts != null)
 		for (Contact contact : contacts){
@@ -62,11 +63,10 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		if (contacts == null ||	date == null ||	text == null){
+		if (contacts == null ||	date == null ||	text == null)
 			throw new NullPointerException();
-		}else{
-			
-		}
+		else if (this.contactSetInCRM(contacts))
+			this.meetinglist.add(new PastMeetingImpl(this.meetinglist.size(), date, contacts, text));
 	}
 
 	/**{@inheritDoc} 
@@ -211,7 +211,17 @@ public class ContactManagerImpl implements ContactManager {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param contacts
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	private boolean contactSetInCRM(Set<Contact> contacts){
+		
+		if (contacts == null)
+				throw new IllegalArgumentException();
+		
 		for (Contact contact : contacts)
 			if (!contactIsInCRM(contact))
 				return false;
