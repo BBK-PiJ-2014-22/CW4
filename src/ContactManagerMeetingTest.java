@@ -243,14 +243,32 @@ public class ContactManagerMeetingTest {
 	
 	//TODO - Add Past meetings Tests
 	
+	/**APMTest11 - Multiple Meetings added
+	 * 
+	 * Should result in the final meeting ID matching the correct meeting
+	 */
+	@Test
+	public void APM11MultipleMeetings(){
+	
+		for (int i = 0; i < 10 ; i ++)
+			cm.addNewPastMeeting(cm.getContacts(i), TestTools.createCalendar(-1),"Notes"+i);
+		
+		Meeting actual = cm.getMeeting(9);
+		Meeting expected = new PastMeetingImpl(9, TestTools.createCalendar(-1), cm.getContacts(9) ,"Notes9");
 
-	//Test10- Working set,  date is today, notes work
-	//Test11- multiple working meetings, test ID increases
-	//Test12- multiple working meetings with some failures, test no extra IDs
-	//Test13- Single existing contact, date in the past, null notes
-	//Test14-Single existing contact, null date, notes work
+		assertEquals(expected, actual);
+	}
+	
+	
+	
+	
+	
 	
 	//TODO - Add Get Meeting Tests
+	//Test1 - Test works for past
+	//Test2 - Test works for future
+	//Test3 - Test breaks when blank
+	
 	
 	
 	//TODO - Get Future Meeting Tests
@@ -258,7 +276,6 @@ public class ContactManagerMeetingTest {
 	//Test3- ID Matches no meeting
 	
 	//TODO - Get Past meeting tests
-	//Test1- ID Matches past meeting
 	//Test2- ID matches future meeting
 	//Test3- ID Matches no meeting
 	
