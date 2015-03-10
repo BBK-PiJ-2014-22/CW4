@@ -144,7 +144,7 @@ public class ContactManagerMeetingTest {
 		Calendar meetingdate = TestTools.createCalendar(-1);
 		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
-		assertEquals(expected, cm.getFutureMeeting(0));
+		assertEquals(expected, cm.getMeeting(0));
 	}
 	
 	/**APMTest2 - a  single PastMeeting in the past with multiple contacts
@@ -156,7 +156,7 @@ public class ContactManagerMeetingTest {
 		Calendar meetingdate = TestTools.createCalendar(-1);
 		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
-		assertEquals(expected, cm.getFutureMeeting(0));
+		assertEquals(expected, cm.getMeeting(0));
 	}
 	
 	/**APMTest3 - Empty set of contacts, date in the past, notes work
