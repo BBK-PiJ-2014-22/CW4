@@ -193,7 +193,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void APM6NullNotesPastDate(){
-		new PastMeetingImpl(0, TestTools.createCalendar(-1),null);
+		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendar(-1),null);
 	}	
 	
 	/**APMTest7- Some of the Contacts added are not in CM, date in the past
