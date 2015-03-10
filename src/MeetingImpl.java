@@ -46,4 +46,11 @@ public class MeetingImpl implements Meeting {
 		return false;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Meeting [id=" + id + ", date=" + date + ", contacts="
+				+ contacts + "]";
+	}
+
 }

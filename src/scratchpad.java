@@ -10,7 +10,24 @@ import java.util.stream.Collectors;
 public class scratchpad {
 
 	public static void main(String[] args){
-	
+		
+		
+
+		ContactManager cm = new ContactManagerImpl();
+			for (int i = 0; i < 10 ; i++){
+				cm.addNewContact("Name "+i, "Notes "+i);
+			}
+		
+		Set<Contact> contacts = cm.getContacts(0,1,2);
+		//Note that the below contact is equal but not identical to contacts in CM.
+		contacts.add(new ContactImpl(0, "Name 0", "Notes 0"));
+		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+		
+		System.out.println(cm.getMeeting(0));
+		
+		
+		
+		/*
 		Contact contact0 = new ContactImpl(0,"Name 0", "Notes 0");
 		Contact contact1 = new ContactImpl(1,"Name 1", "Notes 1");
 		Contact contact0b = new ContactImpl(0,"Name 0", "Notes 0");
@@ -33,6 +50,7 @@ public class scratchpad {
 		System.out.println(setreference1.equals(setvalue));
 		System.out.println(contact0.equals(contact0b));
 		System.out.println(contact1.equals(contact1b));
+		*/
 		
 		/*List<Contact> original = Arrays.asList(new ContactImpl(0,"0","0"),
 											   new ContactImpl(1,"1","1"),
