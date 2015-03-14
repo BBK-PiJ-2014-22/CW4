@@ -27,18 +27,12 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		
-		//TODO - Refactor to use ContactSetInCRM
-		//Tests to see if each contact in the set is in the CRM system
-		if (contacts != null)
-		for (Contact contact : contacts){
-			if (!contactIsInCRM(contact)){
-				throw new IllegalArgumentException();
-			}		
-		}
-		
-		Meeting toAdd = new FutureMeetingImpl(this.meetinglist.size(), date, contacts);
-		this.meetinglist.add(toAdd);
-		return toAdd.getId();
+		if (contactSetInCRM(contacts)){
+			Meeting toAdd = new FutureMeetingImpl(this.meetinglist.size(), date, contacts);
+			this.meetinglist.add(toAdd);
+			return toAdd.getId();			
+		}else
+			throw new IllegalArgumentException();
 	}
 	
 	/**{@inheritDoc} 
