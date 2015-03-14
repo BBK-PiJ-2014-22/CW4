@@ -329,14 +329,34 @@ public class ContactManagerMeetingTest {
 		assertEquals(null, this.cm.getFutureMeeting(0));
 	}
 
-
-	
-	//Test2- ID matches past meeting
-	//Test3- ID Matches no meeting
 	
 	//TODO - Get Past meeting tests
-	//Test2- ID matches future meeting
-	//Test3- ID Matches no meeting
+	/**GetPastMeetingTest1 - tests for a future meeting
+	 * 
+	 */
+	@Test
+	public void GPMTest1MeetingInPast(){
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "notes");
+		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendar(-1), cm.getContacts(0,1), "notes");
+		assertEquals(expected, this.cm.getPastMeeting(0));
+	}
+
+	/**GetPastMeetingTest2 - tests for a future meeting
+	 * 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void GpMTest2MeetingInFuture(){
+		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		this.cm.getPastMeeting(0);
+	}
+	
+	/**GetFutureMeetingTest3 - tests if no meeting with ID exists
+	 * 
+	 */
+	@Test
+	public void GPMTest3MeetingDoesNotExist(){
+		assertEquals(null, this.cm.getFutureMeeting(0));
+	}
 	
 	//TODO - getFutureMeetingList(Contact) tests (Note: Check order)
 	//Test1- no meetings with contact
