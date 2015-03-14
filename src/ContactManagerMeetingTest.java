@@ -547,12 +547,40 @@ public class ContactManagerMeetingTest {
 		List<Meeting> expected  = buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
 		
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(24)));
+	}
+	
+	@Test
+	public void GFMLDateTest2MultiplePastAndFutureMeetings(){
+		Object[][] meetingData = {
+				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"},		
+			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
+			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(1)},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3), "Notes"},
+			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(-3), "Notes"}
+			      };
 		
+		int[] meetingOrder = {4,0,2};
+		List<Meeting> expected  = buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
 		
-
-	//Test3- Date does not match to any meetings
-	//Test5- date matches to multiple past meetings
-
+		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(0)));
+	}
+		
+	@Test
+	public void GFMLDateTest3NoMatch(){
+		Object[][] meetingData = {
+				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"},		
+			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
+			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(1)},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3), "Notes"},
+			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(-3), "Notes"}
+			      };
+		
+		int[] meetingOrder = {5};
+		buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
+		List<Meeting> expected = new ArrayList<Meeting>();
+		
+		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarMonths(5)));
+	}
 	
 	//TODO - addMeetingNotes tests
 	//Test1 - Add notes to past meeting, check they add
@@ -565,8 +593,16 @@ public class ContactManagerMeetingTest {
 	//TODO  add after AddNotes is included - GFMLTest5- convert future meeting to past, get list
 	//TODO  add after AddNotes is included - GPMLTest5- convert future meeting to past, get list
 	
-	}
 	
+	
+	/**Takes an Object[][] with parameters for a series of meeting to add to the CM. If notes are present, it will create a past meeting, else future
+	 * Will return a List<Meeting> of meetings matching the IDs, in the order entered, to allow easy testing 
+	 * 
+	 * @param cm ContactManager to add meetings to
+	 * @param meetingData Object[][] containing for each row {int expectedID, Set<Contact> meetingContacts, Calendar date, (Optional) String(Notes)} 
+	 * @param orderedIDs IDs of meethings to return in the List<Meeting>
+	 * @return List of meetings in the order of the orderedIDs
+	 */
 	public static List<Meeting> buildFutureMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
@@ -589,20 +625,4 @@ public class ContactManagerMeetingTest {
 		}
 		return expected;
 	}
-	
-	private static List<Meeting> buildPastMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
-		for (Object[] row: meetingData)
-			cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], (String)row[3]);
-		
-		List<Meeting> expected = new ArrayList<Meeting>();
-		
-		for (int i = 0; i < 5 ; i++){
-			for (Object[] row : meetingData){
-				if (row[0].equals(orderedIDs[i]))
-					expected.add(new PastMeetingImpl((int)row[0], (Calendar)row[2], (Set<Contact>)row[1],(String)row[3]));
-			}
-		}
-		return expected;
-	}
-
 }

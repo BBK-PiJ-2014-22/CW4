@@ -18,17 +18,23 @@ public class scratchpad {
 		ContactManager cm = new ContactManagerImpl();
 			for (int i = 0; i < 10 ; i++){
 				cm.addNewContact("Name "+i, "Notes "+i);
-			}
+			}		
 		
-		Set<Contact> contacts = cm.getContacts(0,1,2);
-		//Note that the below contact is equal but not identical to contacts in CM.
-		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
-		cm.addNewPastMeeting(contacts, TestTools.createCalendarMonths(-1), "Notes");
+		Object[][] meetingData = {
+				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(2)},		
+			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(1)},
+			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(3)},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(2)},
+			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(4)},
+			      {5, cm.getContacts(0,1), TestTools.createCalendarHours(-1), "Notes"},
+			      {6, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"}
+			      };
 		
-		System.out.println(cm.getMeeting(0));
+		int[] orderedIDs = {6,5,0,3,4};
 		
+		List<Meeting> expected = ContactManagerMeetingTest.buildFutureMeetingSetup(cm, meetingData, orderedIDs);
 		
-		
+		System.out.println(expected);
 		
 		
 		/*
