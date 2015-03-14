@@ -131,11 +131,17 @@ public class ContactManagerImpl implements ContactManager {
 		return toReturn;
 	}
 
-	
+
 	/**Helper function for getFutureMeetingList
 	 * 
+	 * @param contact contact to search for. Should match parent method
+	 * @param meetingType Type of meeting to be found
+	 * @return A sorted list<Meeting> of meetings of meetings of the correct type with that contact.
 	 */
 	private List<Meeting> getMeetingList(Contact contact, Class<? extends Meeting> meetingType) {
+		
+		if (!this.contactIsInCRM(contact))
+			throw new IllegalArgumentException();
 		
 		List<Meeting> toReturn = this.meetinglist.stream()
  											     .filter(meeting -> meeting.getContacts().contains(contact))
@@ -143,11 +149,8 @@ public class ContactManagerImpl implements ContactManager {
 											     .collect(Collectors.toList());
 		
 		Collections.sort(toReturn, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
-		
 		return toReturn;
 	}
-	
-	
 	
 	/**{@inheritDoc} 
 	 * 
