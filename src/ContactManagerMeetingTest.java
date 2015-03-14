@@ -582,7 +582,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarMonths(5)));
 	}
 	
-	//TODO - addMeetingNotes tests
+	//addMeetingNotes tests
 	//Test1 - Add notes to past meeting, check they add
 	//Test2 - Add notes to past meeting multiple times
 	//Test3 - Add null notes to past meeting

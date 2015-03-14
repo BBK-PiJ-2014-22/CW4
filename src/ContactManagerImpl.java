@@ -116,8 +116,13 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> toReturn = this.meetinglist.stream()
+				       		   					 .filter(meeting ->  sameDate( meeting.getDate() , date))
+				       		   					 .collect(Collectors.toList());
+		
+		sortChronologically(toReturn);
+		
+		return toReturn;
 	}
 
 	/**{@inheritDoc} 
@@ -250,6 +255,14 @@ public class ContactManagerImpl implements ContactManager {
 		return true;
 	}
 	
+	public static boolean sameDate(Calendar c1, Calendar c2){
+		return ((c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) && 
+				(c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)));
+	}
 	
+	
+	private void sortChronologically(List<Meeting> list){
+		Collections.sort(list, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
+	}
 }
 

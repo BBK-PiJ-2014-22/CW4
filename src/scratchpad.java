@@ -14,6 +14,12 @@ public class scratchpad {
 		
 		
 
+		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(0), TestTools.createCalendarHours(0)));
+		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(25), TestTools.createCalendarHours(26)));
+		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(-25), TestTools.createCalendarHours(-26)));
+		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarMonths(48), TestTools.createCalendarHours(0)));
+		
+		
 		
 		ContactManager cm = new ContactManagerImpl();
 			for (int i = 0; i < 10 ; i++){
