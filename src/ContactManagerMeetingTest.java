@@ -408,19 +408,19 @@ public class ContactManagerMeetingTest {
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
 		//This data is used to both add meetings to the CM and to create the expected list
-		Object[][] meetingData = {{2, cm.getContacts(0,1), TestTools.createCalendar(2)},
-								  {3, cm.getContacts(0,1), TestTools.createCalendar(5)},		
-							      {4, cm.getContacts(0,1), TestTools.createCalendar(4)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendar(1)},
-							      {6, cm.getContacts(0,1), TestTools.createCalendar(3)},
-							      {7, cm.getContacts(1,2), TestTools.createCalendar(1)}
+		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendar(2)},
+								  {2, cm.getContacts(0,1), TestTools.createCalendar(5)},		
+							      {3, cm.getContacts(0,1), TestTools.createCalendar(4)},
+							      {4, cm.getContacts(0,1), TestTools.createCalendar(1)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendar(3)},
+							      {6, cm.getContacts(1,2), TestTools.createCalendar(1)}
 							      };
 		
 		for (Object[] row : meetingData){
 			cm.addFutureMeeting((Set<Contact>)row[1], (Calendar)row[2]);
 		}
 		//This is the order in chronological order needed for the expected list
-		int[] listOrder = {5,2,6,4,3};
+		int[] listOrder = {4,1,5,3,2};
 		
 		for (int i = 0; i < 5 ; i++){
 			for (Object[] row : meetingData){
@@ -491,19 +491,19 @@ public class ContactManagerMeetingTest {
 		List<PastMeeting> expected = new ArrayList<PastMeeting>();
 		
 		//This data is used to both add meetings to the CM and to create the expected list
-		Object[][] meetingData = {{2, cm.getContacts(0,1), TestTools.createCalendar(-2)},
-								  {3, cm.getContacts(0,1), TestTools.createCalendar(-5)},		
-							      {4, cm.getContacts(0,1), TestTools.createCalendar(-4)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendar(-1)},
-							      {6, cm.getContacts(0,1), TestTools.createCalendar(-3)},
-							      {7, cm.getContacts(1,2), TestTools.createCalendar(-1)}
+		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendar(-2)},
+								  {2, cm.getContacts(0,1), TestTools.createCalendar(-5)},		
+							      {3, cm.getContacts(0,1), TestTools.createCalendar(-4)},
+							      {4, cm.getContacts(0,1), TestTools.createCalendar(-1)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendar(-3)},
+							      {6, cm.getContacts(1,2), TestTools.createCalendar(-1)}
 							      };
 		
 		for (Object[] row : meetingData){
 			cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], "Notes");
 		}
 		//This is the order in chronological order needed for the expected list
-		int[] listOrder = {3,4,6,2,5};
+		int[] listOrder = {2,3,5,1,4};
 		
 		for (int i = 0; i < 5 ; i++){
 			for (Object[] row : meetingData){
