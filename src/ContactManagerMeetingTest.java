@@ -407,6 +407,7 @@ public class ContactManagerMeetingTest {
 		
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
+		//This data is used to both add meetings to the CM and to create the expected list
 		Object[][] meetingData = {{2, cm.getContacts(0,1), TestTools.createCalendar(2)},
 								  {3, cm.getContacts(0,1), TestTools.createCalendar(5)},		
 							      {4, cm.getContacts(0,1), TestTools.createCalendar(4)},
@@ -418,7 +419,7 @@ public class ContactManagerMeetingTest {
 		for (Object[] row : meetingData){
 			cm.addFutureMeeting((Set<Contact>)row[1], (Calendar)row[2]);
 		}
-		
+		//This is the order in chronological order needed for the expected list
 		int[] listOrder = {5,2,6,4,3};
 		
 		for (int i = 0; i < 5 ; i++){
@@ -442,15 +443,99 @@ public class ContactManagerMeetingTest {
 		cm.getFutureMeetingList(fakecontact);		
 	}
 	
-	//TODO  add after AddNotes is included - Test4- convert future meeting to past, get list
+	//GetPastMeetingList(Contact) tests (GPML)
+	
+	/**GetPastMeetingList(Contact)Test1 - no future meetings with contact
+	 * 
+	 * Should return empty list
+	 */
+	@Test
+	public void GPMLTest1ContactNoMeetings(){
+		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendar(-1), "Notes");
+		List<PastMeeting> expected = new ArrayList<PastMeeting>();
+		List<PastMeeting> actual = cm.getPastMeetingList(contact);
+		assertEquals(expected, actual);
+	}
+	
+	/**GetFutureMeetingList(Contact)Test2 - one future meetings with contact
+	 * 
+	 * Should return list of 1 meeting
+	 */
+	@Test
+	public void GPMLTest2ContactOneMeeting(){
+		
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendar(-1), "Notes");
+
+		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
+		List<PastMeeting> expected = new ArrayList<PastMeeting>();
+		expected.add(new PastMeetingImpl(1, TestTools.createCalendar(-1),cm.getContacts(0,1)));
+		
+		List<PastMeeting> actual = cm.getPastMeetingList(contact);
+		assertEquals(expected, actual);
+	}
+
+	
+	/**GetFutureMeetingList(Contact)Test3 - multiple future meetings with contact
+	 * 
+	 * Should return list of 5 meetings, sorted
+	 */
+	@Test
+	public void GPMLTest3ContactMultipleMeetings(){
+		
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		
+		List<PastMeeting> expected = new ArrayList<PastMeeting>();
+		
+		//This data is used to both add meetings to the CM and to create the expected list
+		Object[][] meetingData = {{2, cm.getContacts(0,1), TestTools.createCalendar(-2)},
+								  {3, cm.getContacts(0,1), TestTools.createCalendar(-5)},		
+							      {4, cm.getContacts(0,1), TestTools.createCalendar(-4)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendar(-1)},
+							      {6, cm.getContacts(0,1), TestTools.createCalendar(-3)},
+							      {7, cm.getContacts(1,2), TestTools.createCalendar(-1)}
+							      };
+		
+		for (Object[] row : meetingData){
+			cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], "Notes");
+		}
+		//This is the order in chronological order needed for the expected list
+		int[] listOrder = {3,4,6,2,5};
+		
+		for (int i = 0; i < 5 ; i++){
+			for (Object[] row : meetingData){
+				if (row[0].equals(listOrder[i]))
+					expected.add(new PastMeetingImpl((int)row[0], (Calendar)row[2], (Set<Contact>)row[1],"Notes"));
+			}
+		}
+		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
+		List<PastMeeting> actual = cm.getPastMeetingList(contact);
+		assertEquals(expected, actual);
+	}
+	
+	/**GetFutureMeetingList(Contact)Test4 - contact does not exist
+	 * 
+	 * Should return an IllegalArgumentException
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void GPMLTest4ContactDoesNotExist(){
+		Contact fakecontact = new ContactImpl(11, "Fake Name", "Fake Notes");
+		cm.getPastMeetingList(fakecontact);		
+	}
+	
+	//TODO  add after AddNotes is included - Test5- convert future meeting to past, get list
 
 	
 	//TODO - getPastMeetingList(Contact) tests (Note: Check order)
 	//Test1- no meetings with contact
 	//Test2- one meeting with contact
 	//Test3- multiple meetings with contact
-	//Test4- convert future meeting to past, get list
-	//Test5- contact does not exist
+	//Test4- contact does not exist
+	//TODO  add after AddNotes is included - Test5- convert future meeting to past, get list
+
 	
 	//TODO - getFutureMeetingList(Date) tests (Note: Check order)
 	//Test1- Date matches to future meeting
