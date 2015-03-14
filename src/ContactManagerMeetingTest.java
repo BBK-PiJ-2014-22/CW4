@@ -555,7 +555,7 @@ public class ContactManagerMeetingTest {
 				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"},		
 			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
 			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(1)},
-			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3), "Notes"},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3)},
 			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(-3), "Notes"}
 			      };
 		
@@ -571,7 +571,7 @@ public class ContactManagerMeetingTest {
 				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"},		
 			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
 			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(1)},
-			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3), "Notes"},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3)},
 			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(-3), "Notes"}
 			      };
 		
