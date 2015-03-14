@@ -527,7 +527,6 @@ public class ContactManagerMeetingTest {
 	}
 	
 	//TODO  add after AddNotes is included - Test5- convert future meeting to past, get list
-
 	
 	//TODO - getPastMeetingList(Contact) tests (Note: Check order)
 	//Test1- no meetings with contact

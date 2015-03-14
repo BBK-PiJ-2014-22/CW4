@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
@@ -107,8 +108,7 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		return getMeetingList(contact, FutureMeeting.class);
 	}
 
 	/**{@inheritDoc} 
@@ -125,10 +125,30 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		List<PastMeeting> toReturn = new ArrayList<PastMeeting>();
+		for  (Meeting meeting : getMeetingList(contact, PastMeeting.class))
+			toReturn.add((PastMeeting) meeting);
+		return toReturn;
 	}
 
+	
+	/**Helper function for getFutureMeetingList
+	 * 
+	 */
+	private List<Meeting> getMeetingList(Contact contact, Class<? extends Meeting> meetingType) {
+		
+		List<Meeting> toReturn = this.meetinglist.stream()
+ 											     .filter(meeting -> meeting.getContacts().contains(contact))
+  											     .filter(meeting -> meetingType.isInstance(meeting))
+											     .collect(Collectors.toList());
+		
+		Collections.sort(toReturn, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
+		
+		return toReturn;
+	}
+	
+	
+	
 	/**{@inheritDoc} 
 	 * 
 	 */
