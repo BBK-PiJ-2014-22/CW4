@@ -23,9 +23,11 @@ public class scratchpad {
 		Set<Contact> contacts = cm.getContacts(0,1,2);
 		//Note that the below contact is equal but not identical to contacts in CM.
 		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
-		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(contacts, TestTools.createCalendarMonths(-1), "Notes");
 		
 		System.out.println(cm.getMeeting(0));
+		
+		
 		
 		
 		

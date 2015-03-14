@@ -17,7 +17,7 @@ public class FutureMeetingImplTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructorPastDate() {
-		new FutureMeetingImpl(0, TestTools.createCalendar(-1), new HashSet<Contact>());
+		new FutureMeetingImpl(0, TestTools.createCalendarMonths(-1), new HashSet<Contact>());
 	}
 
 }

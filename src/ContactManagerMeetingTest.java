@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void AFM1singleContactFutureDate(){
-		Calendar meetingdate = TestTools.createCalendar(1);
+		Calendar meetingdate = TestTools.createCalendarMonths(1);
 		cm.addFutureMeeting(cm.getContacts(0), meetingdate);
 		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, cm.getContacts(0));
 		assertEquals(expected, cm.getFutureMeeting(0));
@@ -44,7 +45,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void AFM2multiContactFutureDate(){
-		Calendar meetingdate = TestTools.createCalendar(1);
+		Calendar meetingdate = TestTools.createCalendarMonths(1);
 		cm.addFutureMeeting(cm.getContacts(0,1,2,3), meetingdate);
 		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, cm.getContacts(0,1,2,3));
 		assertEquals(expected, cm.getFutureMeeting(0));
@@ -54,7 +55,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void AFM3emptySetFutureDate(){
-		Calendar meetingdate = TestTools.createCalendar(1);
+		Calendar meetingdate = TestTools.createCalendarMonths(1);
 		cm.addFutureMeeting(new HashSet<Contact>(), meetingdate);
 		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, new HashSet<Contact>());
 		assertEquals(expected, cm.getFutureMeeting(0));
@@ -68,7 +69,7 @@ public class ContactManagerMeetingTest {
 	//TODO - may need changing if answer on Forum comes back that this should result in null pointer exception
 	@Test
 	public void AFM4NullSetFutureMeeting(){
-		Calendar meetingdate = TestTools.createCalendar(1);
+		Calendar meetingdate = TestTools.createCalendarMonths(1);
 		cm.addFutureMeeting(null, meetingdate);
 		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, null);
 		assertEquals(expected, cm.getFutureMeeting(0));
@@ -83,7 +84,7 @@ public class ContactManagerMeetingTest {
 		Set<Contact> contacts = cm.getContacts(0,1,2);
 		//Note that the below contact is equal but not identical to contacts in CM. Need to be the same object
 		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
-		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
+		cm.addFutureMeeting(contacts, TestTools.createCalendarMonths(1));
 	}
 
 	/**AFMTest6- all contacts to add are not in CM, date in the future
@@ -95,7 +96,7 @@ public class ContactManagerMeetingTest {
 		Set<Contact> contacts = new HashSet<Contact>();
 		contacts.add(new ContactImpl(100, "Notin CRM1", "This Should Break"));
 		contacts.add(new ContactImpl(101, "Notin CRM2", "This Should Break"));
-		cm.addFutureMeeting(contacts, TestTools.createCalendar(1));
+		cm.addFutureMeeting(contacts, TestTools.createCalendarMonths(1));
 	}
 
 	/**AFMTest7- Contact set works, but the date is in the past.
@@ -104,7 +105,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void AFM7PastDate(){
-		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(-1));
+		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendarMonths(-1));
 	}
 	
 	/**AFMTest8- Contact set works, but the date is today.
@@ -114,7 +115,7 @@ public class ContactManagerMeetingTest {
 	//TODO - double check this is the case. Might be ok.
 	@Test(expected = IllegalArgumentException.class)
 	public void AFM8TodaysDate(){
-		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendar(0));
+		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendarMonths(0));
 	}
 	
 	/**AFMTest9 - Multiple meetings added. Tests that the meeting ID increases,
@@ -128,7 +129,7 @@ public class ContactManagerMeetingTest {
 		int[] actual = new int[10];
 		
 		for (int i = 0; i < 10 ; i ++)
-			actual[i] = cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendar(1));
+			actual[i] = cm.addFutureMeeting(cm.getContacts(i), TestTools.createCalendarMonths(1));
 
 		int[] expected = {0,1,2,3,4,5,6,7,8,9};
 		
@@ -143,7 +144,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void APM1singleContactPastDate(){
-		Calendar meetingdate = TestTools.createCalendar(-1);
+		Calendar meetingdate = TestTools.createCalendarMonths(-1);
 		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
 		assertEquals(expected, cm.getMeeting(0));
@@ -155,7 +156,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void APM2MultiContactPastDate(){
-		Calendar meetingdate = TestTools.createCalendar(-1);
+		Calendar meetingdate = TestTools.createCalendarMonths(-1);
 		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
 		assertEquals(expected, cm.getMeeting(0));
@@ -168,7 +169,7 @@ public class ContactManagerMeetingTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void APM3EmptyContactsPastDate(){
 		Set<Contact> emptySet = new HashSet<Contact>();
-		cm.addNewPastMeeting(emptySet,TestTools.createCalendar(-1),"Notes");
+		cm.addNewPastMeeting(emptySet,TestTools.createCalendarMonths(-1),"Notes");
 	}	
 	
 	/**APMTest4 -null for contact set, date in the past, notes work
@@ -177,7 +178,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void APM4NullContactsPastDate(){
-		cm.addNewPastMeeting(null, TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(null, TestTools.createCalendarMonths(-1), "Notes");
 	}
 	
 	/**APMTest5 -null for calendar, contacts and notes work
@@ -195,7 +196,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void APM6NullNotesPastDate(){
-		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendar(-1),null);
+		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(-1),null);
 	}	
 	
 	/**APMTest7- Some of the Contacts added are not in CM, date in the past
@@ -207,7 +208,7 @@ public class ContactManagerMeetingTest {
 		Set<Contact> contacts = cm.getContacts(0,1,2);
 		//Note that the below contact is equal but not identical to contacts in CM.
 		contacts.add(new ContactImpl(3, "Name 3", "Notes 3"));
-		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(contacts, TestTools.createCalendarMonths(-1), "Notes");
 	}
 
 	/**APMTest8- all contacts to add are not in CM, date in the past
@@ -219,7 +220,7 @@ public class ContactManagerMeetingTest {
 		Set<Contact> contacts = new HashSet<Contact>();
 		contacts.add(new ContactImpl(100, "Notin CRM1", "This Should Break"));
 		contacts.add(new ContactImpl(101, "Notin CRM2", "This Should Break"));
-		cm.addNewPastMeeting(contacts, TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(contacts, TestTools.createCalendarMonths(-1), "Notes");
 	}
 	
 	/**APMTest9- Date is in the future
@@ -228,7 +229,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void APM9DateInFuture(){
-		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendar(1), "Notes");
+		cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(1), "Notes");
 	}
 	
 	/**APMTest10- Date is today
@@ -237,7 +238,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void APM10DateIsToday(){
-		Calendar meetingdate = TestTools.createCalendar(0);
+		Calendar meetingdate = TestTools.createCalendarMonths(0);
 		cm.addNewPastMeeting(cm.getContacts(0), meetingdate, "Notes");
 		PastMeeting expected = new PastMeetingImpl(0, meetingdate, cm.getContacts(0), "Notes");
 		assertEquals(expected, cm.getFutureMeeting(0));
@@ -253,10 +254,10 @@ public class ContactManagerMeetingTest {
 	public void APM11MultipleMeetings(){
 	
 		for (int i = 0; i < 10 ; i ++)
-			cm.addNewPastMeeting(cm.getContacts(i), TestTools.createCalendar(-1),"Notes"+i);
+			cm.addNewPastMeeting(cm.getContacts(i), TestTools.createCalendarMonths(-1),"Notes"+i);
 		
 		Meeting actual = cm.getMeeting(9);
-		Meeting expected = new PastMeetingImpl(9, TestTools.createCalendar(-1), cm.getContacts(9) ,"Notes9");
+		Meeting expected = new PastMeetingImpl(9, TestTools.createCalendarMonths(-1), cm.getContacts(9) ,"Notes9");
 
 		assertEquals(expected, actual);
 	}
@@ -277,8 +278,8 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void GMTest1MeetingInPast(){
-		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "text");
-		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendar(-1), cm.getContacts(0,1), "text");
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "text");
+		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(-1), cm.getContacts(0,1), "text");
 		assertEquals(expected, this.cm.getMeeting(0));
 	}
 	
@@ -288,8 +289,8 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void GMTest2MeetingInFuture(){
-		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
-		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendar(1), cm.getContacts(0,1), "text");
+		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
+		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(1), cm.getContacts(0,1), "text");
 		assertEquals(expected, this.cm.getMeeting(0));
 	}
 	
@@ -309,8 +310,8 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void GFMTest1MeetingInFuture(){
-		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
-		Meeting expected = new MeetingImpl(0, TestTools.createCalendar(1), cm.getContacts(0,1));
+		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
+		Meeting expected = new MeetingImpl(0, TestTools.createCalendarMonths(1), cm.getContacts(0,1));
 		assertEquals(expected, this.cm.getFutureMeeting(0));
 	}
 
@@ -319,7 +320,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void GFMTest2MeetingInPast(){
-		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "text");
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "text");
 		this.cm.getFutureMeeting(0);
 	}
 	
@@ -338,8 +339,8 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void GPMTest1MeetingInPast(){
-		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "notes");
-		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendar(-1), cm.getContacts(0,1), "notes");
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "notes");
+		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(-1), cm.getContacts(0,1), "notes");
 		assertEquals(expected, this.cm.getPastMeeting(0));
 	}
 
@@ -348,7 +349,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void GpMTest2MeetingInFuture(){
-		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
 		this.cm.getPastMeeting(0);
 	}
 	
@@ -369,7 +370,7 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GFMLTest1ContactNoMeetings(){
 		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
-		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "Notes");
 		List<Meeting> expected = new ArrayList<Meeting>();
 		List<Meeting> actual = cm.getFutureMeetingList(contact);
 		assertEquals(expected, actual);
@@ -382,14 +383,14 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GFMLTest2ContactOneMeeting(){
 		
-		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "Notes");
-		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
-		cm.addFutureMeeting(cm.getContacts(1,2), TestTools.createCalendar(1));
+		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "Notes");
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
+		cm.addFutureMeeting(cm.getContacts(1,2), TestTools.createCalendarMonths(1));
 
 		
 		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
 		List<Meeting> expected = new ArrayList<Meeting>();
-		expected.add(new FutureMeetingImpl(1, TestTools.createCalendar(1),cm.getContacts(0,1)));
+		expected.add(new FutureMeetingImpl(1, TestTools.createCalendarMonths(1),cm.getContacts(0,1)));
 		
 		List<Meeting> actual = cm.getFutureMeetingList(contact);
 		assertEquals(expected, actual);
@@ -403,17 +404,17 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GFMLTest3ContactMultipleMeetings(){
 		
-		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "Notes");
+		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "Notes");
 		
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
 		//This data is used to both add meetings to the CM and to create the expected list
-		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendar(2)},
-								  {2, cm.getContacts(0,1), TestTools.createCalendar(5)},		
-							      {3, cm.getContacts(0,1), TestTools.createCalendar(4)},
-							      {4, cm.getContacts(0,1), TestTools.createCalendar(1)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendar(3)},
-							      {6, cm.getContacts(1,2), TestTools.createCalendar(1)}
+		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendarMonths(2)},
+								  {2, cm.getContacts(0,1), TestTools.createCalendarMonths(5)},		
+							      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
+							      {4, cm.getContacts(0,1), TestTools.createCalendarMonths(1)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendarMonths(3)},
+							      {6, cm.getContacts(1,2), TestTools.createCalendarMonths(1)}
 							      };
 		
 		for (Object[] row : meetingData){
@@ -452,8 +453,8 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GPMLTest1ContactNoMeetings(){
 		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
-		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
-		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendar(-1), "Notes");
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
+		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendarMonths(-1), "Notes");
 		List<PastMeeting> expected = new ArrayList<PastMeeting>();
 		List<PastMeeting> actual = cm.getPastMeetingList(contact);
 		assertEquals(expected, actual);
@@ -466,13 +467,13 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GPMLTest2ContactOneMeeting(){
 		
-		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
-		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "Notes");
-		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendar(-1), "Notes");
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
+		cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(-1), "Notes");
+		cm.addNewPastMeeting(cm.getContacts(1,2), TestTools.createCalendarMonths(-1), "Notes");
 
 		Contact contact = (Contact)cm.getContacts(0).toArray()[0];
 		List<PastMeeting> expected = new ArrayList<PastMeeting>();
-		expected.add(new PastMeetingImpl(1, TestTools.createCalendar(-1),cm.getContacts(0,1)));
+		expected.add(new PastMeetingImpl(1, TestTools.createCalendarMonths(-1),cm.getContacts(0,1)));
 		
 		List<PastMeeting> actual = cm.getPastMeetingList(contact);
 		assertEquals(expected, actual);
@@ -486,17 +487,17 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GPMLTest3ContactMultipleMeetings(){
 		
-		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
+		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
 		
 		List<PastMeeting> expected = new ArrayList<PastMeeting>();
-		
+		//TODO - Refactor this to use build meeting
 		//This data is used to both add meetings to the CM and to create the expected list
-		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendar(-2)},
-								  {2, cm.getContacts(0,1), TestTools.createCalendar(-5)},		
-							      {3, cm.getContacts(0,1), TestTools.createCalendar(-4)},
-							      {4, cm.getContacts(0,1), TestTools.createCalendar(-1)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendar(-3)},
-							      {6, cm.getContacts(1,2), TestTools.createCalendar(-1)}
+		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendarMonths(-2)},
+								  {2, cm.getContacts(0,1), TestTools.createCalendarMonths(-5)},		
+							      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(-4)},
+							      {4, cm.getContacts(0,1), TestTools.createCalendarMonths(-1)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendarMonths(-3)},
+							      {6, cm.getContacts(1,2), TestTools.createCalendarMonths(-1)}
 							      };
 		
 		for (Object[] row : meetingData){
@@ -526,27 +527,32 @@ public class ContactManagerMeetingTest {
 		cm.getPastMeetingList(fakecontact);		
 	}
 	
-	//TODO  add after AddNotes is included - Test5- convert future meeting to past, get list
-	
-	//TODO - getPastMeetingList(Contact) tests (Note: Check order)
-	//Test1- no meetings with contact
-	//Test2- one meeting with contact
-	//Test3- multiple meetings with contact
-	//Test4- contact does not exist
-	//TODO  add after AddNotes is included - Test5- convert future meeting to past, get list
 
-	
-	//TODO - getFutureMeetingList(Date) tests (Note: Check order)
-	//Test1- Date matches to future meeting
-	//Test2- date matches to multiple future meetings
-	//Test3- Date does not match to any future meetings
-	//Test4- Date is in the past
-	
-	//TODO - getPastMeetingList(Date) tests (Note: Check order)
-	//Test1- Date matches to past meeting
-	//Test2- date matches to multiple past meetings
-	//Test3- Date does not match to any past meetings
-	//Test4- Date is in the future
+	//getFutureMeetingList(Date) tests (Note: Check order)
+	/**GetFutureMeetingList(Date)Test1 - tests when multiple future meetings match the date
+	 * 
+	 * Should result in a list of 2 meetings
+	 */
+	@Test
+	public void GFMLDateTest1MultipleFutureMeetings(){
+		Object[][] meetingData = {
+				  {0, cm.getContacts(0,1), TestTools.createCalendarHours(22)},		
+			      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(4)},
+			      {2, cm.getContacts(0,1), TestTools.createCalendarHours(20)},
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(3)},
+			      {4, cm.getContacts(0,1), TestTools.createCalendarHours(21)}
+			      };
+		
+		int[] meetingOrder = {2,4,0};
+		List<Meeting> expected  = buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
+		
+		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(24)));
+		
+		
+
+	//Test3- Date does not match to any meetings
+	//Test5- date matches to multiple past meetings
+
 	
 	//TODO - addMeetingNotes tests
 	//Test1 - Add notes to past meeting, check they add
@@ -556,6 +562,47 @@ public class ContactManagerMeetingTest {
 	//Test5 - add notes to future meeting, check consistency of list
 	//Test6 - add notes to future meeting in future, check exception
 	//Test7 - add null notes to future meeting
+	//TODO  add after AddNotes is included - GFMLTest5- convert future meeting to past, get list
+	//TODO  add after AddNotes is included - GPMLTest5- convert future meeting to past, get list
 	
+	}
+	
+	public static List<Meeting> buildFutureMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
+		List<Meeting> expected = new ArrayList<Meeting>();
+		
+		for (Object[] row: meetingData)
+			try{
+				cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], (String)row[3]);
+			}catch (ArrayIndexOutOfBoundsException ex){
+				cm.addFutureMeeting((Set<Contact>)row[1], (Calendar)row[2]);
+			}
+		
+		for (int i = 0; i < orderedIDs.length ; i++){
+			for (Object[] row : meetingData){
+				if (row[0].equals(orderedIDs[i]))
+					try{
+						expected.add(new PastMeetingImpl((int)row[0], (Calendar)row[2], (Set<Contact>)row[1], (String)row[3]));
+					}catch (ArrayIndexOutOfBoundsException ex){
+						expected.add(new FutureMeetingImpl((int)row[0], (Calendar)row[2], (Set<Contact>)row[1]));
+					}
+			}
+		}
+		return expected;
+	}
+	
+	private static List<Meeting> buildPastMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
+		for (Object[] row: meetingData)
+			cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], (String)row[3]);
+		
+		List<Meeting> expected = new ArrayList<Meeting>();
+		
+		for (int i = 0; i < 5 ; i++){
+			for (Object[] row : meetingData){
+				if (row[0].equals(orderedIDs[i]))
+					expected.add(new PastMeetingImpl((int)row[0], (Calendar)row[2], (Set<Contact>)row[1],(String)row[3]));
+			}
+		}
+		return expected;
+	}
 
 }
