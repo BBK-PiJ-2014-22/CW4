@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -59,11 +60,12 @@ public class ContactManagerImpl implements ContactManager {
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		if (contacts == null ||	date == null ||	text == null)
 			throw new NullPointerException();
+		else if (date.after(new GregorianCalendar()))
+			throw new IllegalArgumentException();			
 		else if (this.contactSetInCRM(contacts))
 			this.meetinglist.add(new PastMeetingImpl(this.meetinglist.size(), date, contacts, text));
-		else{
+		else
 			throw new IllegalArgumentException();
-		}
 	}
 
 	/**{@inheritDoc} 
