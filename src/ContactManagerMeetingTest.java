@@ -286,7 +286,7 @@ public class ContactManagerMeetingTest {
 	 */
 	@Test
 	public void GMTest2MeetingInFuture(){
-		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(1), "text");
+		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendar(1));
 		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendar(1), cm.getContacts(0,1), "text");
 		assertEquals(expected, this.cm.getMeeting(0));
 	}
