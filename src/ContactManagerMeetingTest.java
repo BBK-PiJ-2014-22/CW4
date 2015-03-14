@@ -583,16 +583,62 @@ public class ContactManagerMeetingTest {
 	}
 	
 	//addMeetingNotes tests
-	//Test1 - Add notes to past meeting, check they add
-	//Test2 - Add notes to past meeting multiple times
-	//Test3 - Add null notes to past meeting
-	//Test4 - Add notes to future meeting with past date, check it converts (Force date change?)
-	//Test5 - add notes to future meeting, check consistency of list
-	//Test6 - add notes to future meeting in future, check exception
-	//Test7 - add null notes to future meeting
-	//TODO  add after AddNotes is included - GFMLTest5- convert future meeting to past, get list
-	//TODO  add after AddNotes is included - GPMLTest5- convert future meeting to past, get list
+	@Test
+	public void AMNTest1AddNotesToPastMeeting(){
+		this.cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(-1), "Notes1");
+		cm.addMeetingNotes(0, "Notes2");
+		cm.addMeetingNotes(0, "Notes3");
+		
+		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(-1), cm.getContacts(0), "Notes1\nNotes2\nNotes3\n");
+		assertEquals(expected, cm.getPastMeeting(0));
+	}
 	
+	@Test (expected = NullPointerException.class)
+	public void AMNTest2AddNullNotes(){
+		this.cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(-1), "Notes1");
+		cm.addMeetingNotes(0, null);
+	}
+		
+	//Test3 - Add notes to future meeting with past date, check it converts (Force date change?)
+	@Test
+	public void AMNTest3ConvertFutureMeeting(){
+		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(0), cm.getContacts(0), "Notes"); 
+		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
+		//Wait is to allow time for the meeting to move to the past so that it can be converted
+		try{ wait(2000);
+		}catch (InterruptedException ex){
+			//Nothing to catch
+		}
+		cm.addMeetingNotes(0, "Notes");
+		assertEquals(expected, cm.getPastMeeting(0));
+	}
+
+	//Test4 - Add notes to future meeting with past date, check it converts (Force date change?)
+	@Test (expected = IllegalArgumentException.class)
+	public void AMNTest4ConvertFutureMeetingTryAndGetFuture(){
+		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
+		//Wait is to allow time for the meeting to move to the past so that it can be converted
+		try{ wait(2000);
+		}catch (InterruptedException ex){
+			//Nothing to catch
+		}
+		cm.addMeetingNotes(0, "Notes");
+		cm.getFutureMeeting(0);
+	}
+
+	
+	//Test5 - Add notes to future meeting, test exception
+	@Test (expected = IllegalStateException.class)
+	public void AMNTest5MeetingInFuture(){
+		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(1));
+		cm.addMeetingNotes(0, "Notes");
+	}
+	
+	//Test6 - add notes to non existent meeting
+	@Test (expected = IllegalArgumentException.class)
+	public void AMNTest6MeetingDoesNotExist(){
+		cm.addMeetingNotes(0, "Notes");
+	}
 	
 	
 	/**Takes an Object[][] with parameters for a series of meeting to add to the CM. If notes are present, it will create a past meeting, else future
@@ -600,7 +646,7 @@ public class ContactManagerMeetingTest {
 	 * 
 	 * @param cm ContactManager to add meetings to
 	 * @param meetingData Object[][] containing for each row {int expectedID, Set<Contact> meetingContacts, Calendar date, (Optional) String(Notes)} 
-	 * @param orderedIDs IDs of meethings to return in the List<Meeting>
+	 * @param orderedIDs IDs of meetings to return in the List<Meeting>
 	 * @return List of meetings in the order of the orderedIDs
 	 */
 	public static List<Meeting> buildFutureMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
