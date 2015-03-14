@@ -9,9 +9,7 @@ public class MeetingImpl implements Meeting {
 	private int id;
 	private Calendar date;
 	private Set<Contact> contacts;
-	private SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy hh:mm");
-	
-	
+		
 	
 	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		this.id = id;
@@ -51,7 +49,7 @@ public class MeetingImpl implements Meeting {
 
 	@Override
 	public String toString() {
-		return "Meeting [id=" + id + ", date=" + sdf.format(date.getTime()) + ", contacts="
+		return "Meeting [id=" + id + ", date=" + date.getTime() + ", contacts="
 				+ contacts + "]";
 	}
 
