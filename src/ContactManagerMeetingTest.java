@@ -259,18 +259,50 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, actual);
 	}
 	
-	
-	
-	
-	
-	
 	//TODO - Add Get Meeting Tests
-	//Test1 - Test works for past
-	//Test2 - Test works for future
-	//Test3 - Test breaks when blank
+	
+	/**
+	 * Returns the meeting with the requested ID, or null if it there is none.
+	 *
+	 * @param id
+	 *            the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 */
+	
+	/**GetMeetingTest1 - tests itworks for a PastMeeting
+	 * 
+	 * Should return a meeting 
+	 */
+	@Test
+	public void GMTest1MeetingInPast(){
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(-1), "text");
+		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendar(-1), cm.getContacts(0,1), "text");
+		assertEquals(expected, this.cm.getMeeting(0));
+	}
+	
+	/**GetMeetingTest2 - tests itworks for a FutureMeeting
+	 * 
+	 * Should return a meeting 
+	 */
+	@Test
+	public void GMTest2MeetingInFuture(){
+		this.cm.addNewPastMeeting(cm.getContacts(0,1), TestTools.createCalendar(1), "text");
+		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendar(1), cm.getContacts(0,1), "text");
+		assertEquals(expected, this.cm.getMeeting(0));
+	}
 	
 	
+	/**GetMeetingTest3 - tests it returns null if not present
+	 * 
+	 * should result in null	  
+	 */
+	@Test
+	public void GMTest3MeetingDoesNotExist(){
+		assertEquals(null, this.cm.getMeeting(0));
+	}
+
 	
+
 	//TODO - Get Future Meeting Tests
 	//Test2- ID matches past meeting
 	//Test3- ID Matches no meeting
