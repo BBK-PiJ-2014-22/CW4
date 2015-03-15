@@ -602,14 +602,16 @@ public class ContactManagerMeetingTest {
 	//Test3 - Add notes to future meeting with past date, check it converts (Force date change?)
 	@Test
 	public void AMNTest3ConvertFutureMeeting(){
-		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(0), cm.getContacts(0), "Notes"); 
-		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarSeconds(1));
+	
+		Calendar meetingDate = TestTools.createCalendarSeconds(1);		
+		this.cm.addFutureMeeting(cm.getContacts(0), meetingDate);
 		//Wait is to allow time for the meeting to move to the past so that it can be converted
 		try{ Thread.sleep(2000);
 		}catch (InterruptedException ex){
 			//Nothing to catch
 		}
 		cm.addMeetingNotes(0, "Notes");
+		PastMeeting expected = new PastMeetingImpl(0, meetingDate , cm.getContacts(0), "Notes"); 
 		assertEquals(expected, cm.getPastMeeting(0));
 	}
 
