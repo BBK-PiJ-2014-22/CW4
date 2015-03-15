@@ -43,8 +43,7 @@ public class MeetingTest {
 	
 	public MeetingTest(int id, int monthChange, int numberOfContacts){
 		
-		this.meetingdate = new GregorianCalendar();
-		this.meetingdate.add(Calendar.MONTH,monthChange);
+		this.meetingdate = TestTools.createCalendarMonths(monthChange);
 		this.meetingid = id;
 		this.contacts = new HashSet<Contact>();
 		
@@ -79,10 +78,25 @@ public class MeetingTest {
 	}
 	
 	@Test
-	public void testEqualToUnequal(){
+	public void testEqualToUnequalID(){
 		Meeting compare = new MeetingImpl(this.meetingid-1, this.meetingdate, this.contacts);
-		assertEquals(false,meeting.equals(compare));	
+		assertEquals(false,meeting.equals(compare));		
+	}
+	
+	@Test
+	public void testEqualToUnequalContacts(){
 		
+		Set<Contact> newContacts = new HashSet<Contact>();
+		newContacts.add(new ContactImpl(4, "Non Contact", "Notes"));
+			
+		Meeting compare = new MeetingImpl(this.meetingid-1, this.meetingdate, newContacts);
+		assertEquals(false,meeting.equals(compare));		
+	}
+	
+	@Test
+	public void testEqualToUnequalDate(){
+		Meeting compare = new MeetingImpl(this.meetingid-1, TestTools.createCalendarMonths(6), this.contacts);
+		assertEquals(false,meeting.equals(compare));		
 	}
 	
 	@Test

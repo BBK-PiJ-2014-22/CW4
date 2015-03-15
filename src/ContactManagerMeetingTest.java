@@ -605,7 +605,7 @@ public class ContactManagerMeetingTest {
 		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(0), cm.getContacts(0), "Notes"); 
 		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
 		//Wait is to allow time for the meeting to move to the past so that it can be converted
-		try{ wait(2000);
+		try{ wait(5000);
 		}catch (InterruptedException ex){
 			//Nothing to catch
 		}
@@ -618,7 +618,7 @@ public class ContactManagerMeetingTest {
 	public void AMNTest4ConvertFutureMeetingTryAndGetFuture(){
 		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
 		//Wait is to allow time for the meeting to move to the past so that it can be converted
-		try{ wait(2000);
+		try{ wait(5000);
 		}catch (InterruptedException ex){
 			//Nothing to catch
 		}
