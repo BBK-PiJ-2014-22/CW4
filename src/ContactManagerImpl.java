@@ -63,7 +63,7 @@ public class ContactManagerImpl implements ContactManager {
 			throw new NullPointerException();
 		else if (date.after(new GregorianCalendar()))
 			throw new IllegalArgumentException();			
-		else if (this.contactSetInCRM(contacts))
+		else if (this.contactSetInCRM(contacts) && !contacts.isEmpty())
 			this.meetinglist.add(new PastMeetingImpl(this.meetinglist.size(), date, contacts, text));
 		else
 			throw new IllegalArgumentException();
