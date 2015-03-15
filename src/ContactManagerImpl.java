@@ -165,18 +165,26 @@ public class ContactManagerImpl implements ContactManager {
 	public void addMeetingNotes(int id, String text) {
 		Meeting meeting = this.getMeeting(id);
 		
-		String notes = "";
-		try{
-			PastMeeting pm = (PastMeeting)meeting;
-			notes = pm.getNotes()+"\n"+text;
-		}catch (ClassCastException ex){
-			notes = text;
-		}finally{
-			int position = this.meetinglist.indexOf(meeting);
-			PastMeeting newMeeting = new PastMeetingImpl(meeting.getId(), meeting.getDate(), meeting.getContacts(), notes);
-			this.meetinglist.remove(position);
-			this.meetinglist.add(position, newMeeting);
-		}
+		if (meeting == null){
+			throw new IllegalArgumentException();
+		}else if (meeting.getDate().compareTo(new GregorianCalendar()) == 1){
+			throw new IllegalStateException();
+		}else if (text == null){
+			throw new NullPointerException();
+		}else{
+			String notes = "";
+			try{
+				PastMeeting pm = (PastMeeting)meeting;
+				notes = pm.getNotes()+"\n"+text;
+			}catch (ClassCastException ex){
+				notes = text;
+			}finally{
+				int position = this.meetinglist.indexOf(meeting);
+				PastMeeting newMeeting = new PastMeetingImpl(meeting.getId(), meeting.getDate(), meeting.getContacts(), notes);
+				this.meetinglist.remove(position);
+				this.meetinglist.add(position, newMeeting);
+			}
+		}		
 	}
 
 	/**{@inheritDoc} 
