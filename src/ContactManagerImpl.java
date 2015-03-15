@@ -119,9 +119,7 @@ public class ContactManagerImpl implements ContactManager {
 		List<Meeting> toReturn = this.meetinglist.stream()
 				       		   					 .filter(meeting ->  sameDate( meeting.getDate() , date))
 				       		   					 .collect(Collectors.toList());
-		
 		sortChronologically(toReturn);
-		
 		return toReturn;
 	}
 
@@ -159,11 +157,26 @@ public class ContactManagerImpl implements ContactManager {
 	
 	/**{@inheritDoc} 
 	 * 
+	 * Warning: will create a new meeting with the same value rather than update the existing meeting,
+	 * even if the notes are being added to a PastMeeting. Direct references to the object will be lost.
+	 * This is an unavoidable consequence of the interface.
 	 */
 	@Override
 	public void addMeetingNotes(int id, String text) {
-		// TODO Auto-generated method stub
-
+		Meeting meeting = this.getMeeting(id);
+		
+		String notes = "";
+		try{
+			PastMeeting pm = (PastMeeting)meeting;
+			notes = pm.getNotes()+"\n"+text;
+		}catch (ClassCastException ex){
+			notes = text;
+		}finally{
+			int position = this.meetinglist.indexOf(meeting);
+			PastMeeting newMeeting = new PastMeetingImpl(meeting.getId(), meeting.getDate(), meeting.getContacts(), notes);
+			this.meetinglist.remove(position);
+			this.meetinglist.add(position, newMeeting);
+		}
 	}
 
 	/**{@inheritDoc} 
