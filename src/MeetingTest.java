@@ -91,5 +91,11 @@ public class MeetingTest {
 		assertEquals(false,meeting.equals(compare));		
 	}
 	
+	@Test
+	public void testCopyConstructor(){
+		Meeting meeting2 = new MeetingImpl(meeting);
+		assertEquals(meeting, meeting2);
+	}
+	
 	
 }

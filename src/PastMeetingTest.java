@@ -67,7 +67,7 @@ public class PastMeetingTest {
 	}
 	
 	@Test
-	public void testGetContacts(){
+	public void testGetNotes(){
 		
 		String comparator = this.notes;
 		if (comparator == null)
