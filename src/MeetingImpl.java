@@ -1,6 +1,7 @@
 
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 import java.text.SimpleDateFormat;
 
@@ -15,14 +16,25 @@ public class MeetingImpl implements Meeting {
 	
 	/**{@inheritDoc} 
 	 * 
-	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting.
+	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting. If contacts is null, it will create
+	 * with an empty contact set. 
 	 * 
 	 * Uniqueness of ID must be managed by the creating class and is not internally managed by the MeetingImpl class.
+	 * 
+	 * @throws NullPointerException if Date is null
 	 */	
 	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		this.id = id;
-		this.date = date;
-		this.contacts = contacts;
+		
+		if (date == null)
+			throw new NullPointerException();
+		else
+			this.date = date;
+		
+		if (contacts == null)
+			this.contacts = new HashSet<Contact>();
+		else
+			this.contacts = contacts;
 	}
 	
 	/**{@inheritDoc} 
