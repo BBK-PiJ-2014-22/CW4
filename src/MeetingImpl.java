@@ -65,14 +65,19 @@ public class MeetingImpl implements Meeting {
 	}
 	
 	/**{@inheritDoc} 
+	 * 
+	 * Will return true if both objects are meeting, ID, contacts and Notes are the same and the 
+	 * Calendars differ by < 1 second
 	 */
+	
 	@Override
 	public boolean equals(Object object){
 		try{
 			Meeting compare = (Meeting) object;
-			return (this.getId() == compare.getId() &&
-					this.getContacts().equals(compare.getContacts()) &&
-					this.getDate().equals(compare.getDate()));
+			return (this.getId() == compare.getId() && 
+				    this.getContacts().equals(compare.getContacts()) &&
+				    (Math.abs(this.getDate().getTimeInMillis() - 
+				    		 compare.getDate().getTimeInMillis()) < 1000));
 		}catch (ClassCastException ex){
 			return false;
 		}

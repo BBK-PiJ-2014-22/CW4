@@ -13,6 +13,12 @@ public class scratchpad {
 	public static void main(String[] args){
 		
 		
+		
+		Calendar c1 = new GregorianCalendar();
+		System.out.println("Time");
+		
+		
+		
 
 		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(0), TestTools.createCalendarHours(0)));
 		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(25), TestTools.createCalendarHours(26)));
@@ -41,6 +47,11 @@ public class scratchpad {
 		List<Meeting> expected = ContactManagerMeetingTest.buildFutureMeetingSetup(cm, meetingData, orderedIDs);
 		
 		System.out.println(expected);
+		
+		Calendar c2 = new GregorianCalendar();
+		
+		System.out.println(c1.getTimeInMillis()-c2.getTimeInMillis());
+
 		
 		
 		/*
