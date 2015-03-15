@@ -86,4 +86,14 @@ public class MeetingImpl implements Meeting {
 				+ contacts + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((contacts == null) ? 0 : contacts.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + id;
+		return result;
+	}
 }
