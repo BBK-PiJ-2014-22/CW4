@@ -17,40 +17,49 @@ public class MeetingImpl implements Meeting {
 		this.contacts = contacts;
 	}
 	
+	/**{@inheritDoc} 
+	 */
 	public MeetingImpl(Meeting meeting){
 		
 	}
 
-	
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public int getId() {
 		return this.id;
 	}
-
+	
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public Calendar getDate() {
 		return this.date;
 	}
 
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public Set<Contact> getContacts() {
 		return this.contacts;
 	}
 	
-	//TODO - rewrite to make exact meeting matches.
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public boolean equals(Object object){
 		try{
 			Meeting compare = (Meeting) object;
-			if (this.getId() == compare.getId())
-				return true;		
+			return (this.getId() == compare.getId() &&
+					this.getContacts().equals(compare.getContacts()) &&
+					this.getDate().equals(compare.getDate()));
 		}catch (ClassCastException ex){
-			//return statement below - any object apart from a class implementing Contact is not equal to a contact
+			return false;
 		}
-		return false;
 	}
 
-
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public String toString() {
 		return "Meeting [id=" + id + ", date=" + date.getTime() + ", contacts="
