@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Set;
 import java.text.SimpleDateFormat;
 
+/**{@inheritDoc} 
+ */
 public class MeetingImpl implements Meeting {
 	
 	private int id;
@@ -11,6 +13,12 @@ public class MeetingImpl implements Meeting {
 	private Set<Contact> contacts;
 		
 	
+	/**{@inheritDoc} 
+	 * 
+	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting.
+	 * 
+	 * Uniqueness of ID must be managed by the creating class and is not internally managed by the MeetingImpl class.
+	 */	
 	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		this.id = id;
 		this.date = date;
