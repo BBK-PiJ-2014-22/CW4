@@ -16,6 +16,10 @@ public class MeetingImpl implements Meeting {
 		this.date = date;
 		this.contacts = contacts;
 	}
+	
+	public MeetingImpl(Meeting meeting){
+		
+	}
 
 	
 	@Override

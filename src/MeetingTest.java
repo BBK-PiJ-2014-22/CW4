@@ -89,13 +89,5 @@ public class MeetingTest {
 	public void testEqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,meeting.equals(compare));		
-	}
-	
-	@Test
-	public void testCopyConstructor(){
-		Meeting meeting2 = new MeetingImpl(meeting);
-		assertEquals(meeting, meeting2);
-	}
-	
-	
+	}	
 }
