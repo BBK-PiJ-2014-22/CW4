@@ -11,7 +11,7 @@ public class ContactImpl implements Contact {
 	 * @param id contact ID
 	 * @param name Name of the contact
 	 * @param notes Notes about interaction with contact
-	 * @throws NullPointerException if Name or Notes is null
+	 * @throws NullPointerException if  Name or Notes is null
 	 */
 	public ContactImpl(int id, String name, String notes){
 		if (name == null || notes == null)
@@ -62,7 +62,7 @@ public class ContactImpl implements Contact {
 
 	/**{@inheritDoc}
 	 * 
-	 * Contacts are equal to other contacts with the same ID else not
+	 * Contacts are equal to other contacts if all fields are equal, else not
 	 */
 	@Override
 	public boolean equals(Object object){
