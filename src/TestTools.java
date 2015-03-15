@@ -25,5 +25,13 @@ public class TestTools {
 		
 		return newCalendar;
 	}
+	
+	public static Calendar createCalendarSeconds(int differenceInSeconds){
+		
+		Calendar newCalendar = new GregorianCalendar();
+		newCalendar.add(Calendar.SECOND,differenceInSeconds);
+		
+		return newCalendar;
+	}
 
 }

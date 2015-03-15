@@ -603,9 +603,9 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void AMNTest3ConvertFutureMeeting(){
 		PastMeeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(0), cm.getContacts(0), "Notes"); 
-		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
+		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarSeconds(1));
 		//Wait is to allow time for the meeting to move to the past so that it can be converted
-		try{ wait(5000);
+		try{ Thread.sleep(2000);
 		}catch (InterruptedException ex){
 			//Nothing to catch
 		}
@@ -616,9 +616,9 @@ public class ContactManagerMeetingTest {
 	//Test4 - Add notes to future meeting with past date, check it converts (Force date change?)
 	@Test (expected = IllegalArgumentException.class)
 	public void AMNTest4ConvertFutureMeetingTryAndGetFuture(){
-		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(0));
+		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarSeconds(1));
 		//Wait is to allow time for the meeting to move to the past so that it can be converted
-		try{ wait(5000);
+		try{ Thread.sleep(2000);
 		}catch (InterruptedException ex){
 			//Nothing to catch
 		}
