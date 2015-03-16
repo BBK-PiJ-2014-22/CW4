@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -11,13 +13,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
+
 
 public class ContactManagerImpl implements ContactManager {
 
 	
 	private List<Contact> contactlist;
-	private List<Meeting> meetinglist;
-	
+	private List<Meeting> meetinglist;	
 	
 	public ContactManagerImpl(){
 		this.contactlist = new ArrayList<Contact>();
@@ -26,6 +30,11 @@ public class ContactManagerImpl implements ContactManager {
 	
 	public ContactManagerImpl(File file){
 		
+		XStream xstream = new XStream(new StaxDriver());
+		ContactManagerImpl copy = (ContactManagerImpl)xstream.fromXML(file);
+		
+		this.contactlist = copy.contactlist;
+		this.meetinglist = copy.meetinglist;
 	}
 	
 	/**{@inheritDoc} 
@@ -240,7 +249,16 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public void flush() {
+		XStream xstream = new XStream(new StaxDriver());
+		String xml = xstream.toXML(this);
 		
+		try{
+			FileWriter writer = new FileWriter(System.getProperty("user.dir") +"\\contacts.xml");
+			writer.write(xml);
+			writer.close();
+		}catch (IOException ex){
+			System.out.println(ex.getStackTrace());
+		}
 
 	}
 	
