@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -487,19 +488,20 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GPMLTest3ContactMultipleMeetings(){
 		
+		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendarMonths(-2)},
+				  {2, cm.getContacts(0,1), TestTools.createCalendarMonths(-5)},		
+			      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(-4)},
+			      {4, cm.getContacts(0,1), TestTools.createCalendarMonths(-1)},
+			      {5, cm.getContacts(0,1), TestTools.createCalendarMonths(-3)},
+			      {6, cm.getContacts(1,2), TestTools.createCalendarMonths(-1)}
+			      };
+		
 		cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
 		
 		List<PastMeeting> expected = new ArrayList<PastMeeting>();
 		//TODO - Refactor this to use build meeting
 		//This data is used to both add meetings to the CM and to create the expected list
-		Object[][] meetingData = {{1, cm.getContacts(0,1), TestTools.createCalendarMonths(-2)},
-								  {2, cm.getContacts(0,1), TestTools.createCalendarMonths(-5)},		
-							      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(-4)},
-							      {4, cm.getContacts(0,1), TestTools.createCalendarMonths(-1)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendarMonths(-3)},
-							      {6, cm.getContacts(1,2), TestTools.createCalendarMonths(-1)}
-							      };
-		
+
 		for (Object[] row : meetingData){
 			cm.addNewPastMeeting((Set<Contact>)row[1], (Calendar)row[2], "Notes");
 		}
@@ -544,7 +546,7 @@ public class ContactManagerMeetingTest {
 			      };
 		
 		int[] meetingOrder = {2,4,0};
-		List<Meeting> expected  = buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
+		List<Meeting> expected  = buildMeetingSetup(this.cm, meetingData, meetingOrder);
 		
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(24)));
 	}
@@ -560,7 +562,7 @@ public class ContactManagerMeetingTest {
 			      };
 		
 		int[] meetingOrder = {4,0,2};
-		List<Meeting> expected  = buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
+		List<Meeting> expected  = buildMeetingSetup(this.cm, meetingData, meetingOrder);
 		
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(0)));
 	}
@@ -576,7 +578,7 @@ public class ContactManagerMeetingTest {
 			      };
 		
 		int[] meetingOrder = {5};
-		buildFutureMeetingSetup(this.cm, meetingData, meetingOrder);
+		buildMeetingSetup(this.cm, meetingData, meetingOrder);
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarMonths(5)));
@@ -643,6 +645,35 @@ public class ContactManagerMeetingTest {
 	}
 	
 	
+	/**Flush Test - will build a state of the ContactManager (with all types of object) and then
+	 * flush it to XML.
+	 * 
+	 * It will then create a separate ContactManger based upon that XML file. 
+	 * 
+	 */
+	@Test
+	public void XMLTest(){
+		
+		Object[][] meetingData = {
+								  {0, cm.getContacts(0,1), TestTools.createCalendarHours(2)},		
+							      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(1)},
+							      {2, cm.getContacts(0,1), TestTools.createCalendarHours(3)},
+							      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(2)},
+							      {4, cm.getContacts(0,1), TestTools.createCalendarHours(4)},
+							      {5, cm.getContacts(0,1), TestTools.createCalendarHours(-1), "Notes"},
+							      {6, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"}
+							      };
+		int[] ids = {0};
+		
+		buildMeetingSetup(cm, meetingData, ids);
+		cm.flush();
+		File contacts = new File(System.getProperty("user.dir") +"\\contacts.txt");
+		ContactManager cm2 = new ContactManager(contacts);
+		
+		assertEquals(cm, cm2);
+		
+	}
+	
 	/**Takes an Object[][] with parameters for a series of meeting to add to the CM. If notes are present, it will create a past meeting, else future
 	 * Will return a List<Meeting> of meetings matching the IDs, in the order entered, to allow easy testing 
 	 * 
@@ -651,7 +682,7 @@ public class ContactManagerMeetingTest {
 	 * @param orderedIDs IDs of meetings to return in the List<Meeting>
 	 * @return List of meetings in the order of the orderedIDs
 	 */
-	public static List<Meeting> buildFutureMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
+	public static List<Meeting> buildMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
 		for (Object[] row: meetingData)
