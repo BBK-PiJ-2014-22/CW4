@@ -8,25 +8,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
+
 public class scratchpad {
 
 	public static void main(String[] args){
-		
-		
-		
-		Calendar c1 = new GregorianCalendar();
-		System.out.println("Time");
-		
-		
-		
-
-		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(0), TestTools.createCalendarHours(0)));
-		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(25), TestTools.createCalendarHours(26)));
-		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarHours(-25), TestTools.createCalendarHours(-26)));
-		System.out.println(ContactManagerImpl.sameDate(TestTools.createCalendarMonths(48), TestTools.createCalendarHours(0)));
-		
-		
-		
+			
 		ContactManager cm = new ContactManagerImpl();
 			for (int i = 0; i < 10 ; i++){
 				cm.addNewContact("Name "+i, "Notes "+i);
@@ -44,14 +32,22 @@ public class scratchpad {
 		
 		int[] orderedIDs = {6,5,0,3,4};
 		
-		List<Meeting> expected = ContactManagerMeetingTest.buildFutureMeetingSetup(cm, meetingData, orderedIDs);
+		ContactManagerMeetingTest.buildFutureMeetingSetup(cm, meetingData, orderedIDs);
 		
-		System.out.println(expected);
-		
-		Calendar c2 = new GregorianCalendar();
-		
-		System.out.println(c1.getTimeInMillis()-c2.getTimeInMillis());
+		XStream xstream = new XStream(new StaxDriver());
 
+		String xml = xstream.toXML(cm);
+		
+		System.out.println(xml);
+		
+		ContactManager cm2 = (ContactManager)xstream.fromXML(xml);
+		
+		String xml2 = xstream.toXML(cm2);
+		
+		System.out.println(xml.equals(xml2));
+		
+		cm2.addFutureMeeting(cm2.getContacts(0,1), TestTools.createCalendarHours(1));
+		System.out.println(cm2.getMeeting(7));
 		
 		
 		/*
