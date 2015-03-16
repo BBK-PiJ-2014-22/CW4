@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -14,13 +15,17 @@ import java.util.stream.Collectors;
 public class ContactManagerImpl implements ContactManager {
 
 	
-	List<Contact> contactlist;
-	List<Meeting> meetinglist;
+	private List<Contact> contactlist;
+	private List<Meeting> meetinglist;
 	
 	
 	public ContactManagerImpl(){
 		this.contactlist = new ArrayList<Contact>();
 		this.meetinglist = new ArrayList<Meeting>();
+	}
+	
+	public ContactManagerImpl(File file){
+		
 	}
 	
 	/**{@inheritDoc} 
@@ -235,7 +240,7 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public void flush() {
-		// TODO Auto-generated method stub
+		
 
 	}
 	
@@ -284,6 +289,45 @@ public class ContactManagerImpl implements ContactManager {
 	
 	private void sortChronologically(List<Meeting> list){
 		Collections.sort(list, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
+	}
+
+	@Override
+	public String toString() {
+		return "ContactManagerImpl [contactlist=" + contactlist
+				+ ", meetinglist=" + meetinglist + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((contactlist == null) ? 0 : contactlist.hashCode());
+		result = prime * result
+				+ ((meetinglist == null) ? 0 : meetinglist.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ContactManagerImpl other = (ContactManagerImpl) obj;
+		if (contactlist == null) {
+			if (other.contactlist != null)
+				return false;
+		} else if (!contactlist.equals(other.contactlist))
+			return false;
+		if (meetinglist == null) {
+			if (other.meetinglist != null)
+				return false;
+		} else if (!meetinglist.equals(other.meetinglist))
+			return false;
+		return true;
 	}
 }
 
