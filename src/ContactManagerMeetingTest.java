@@ -667,7 +667,7 @@ public class ContactManagerMeetingTest {
 		
 		buildMeetingSetup(cm, meetingData, ids);
 		cm.flush();
-		File contacts = new File(System.getProperty("user.dir") +"\\contacts.txt");
+		File contacts = new File(System.getProperty("user.dir") +"\\contacts.xml");
 		ContactManager cm2 = new ContactManagerImpl(contacts);
 		
 		assertEquals(cm, cm2);
