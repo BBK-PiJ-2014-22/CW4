@@ -1,12 +1,7 @@
-import java.util.ArrayList;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -32,23 +27,31 @@ public class scratchpad {
 		
 		int[] orderedIDs = {6,5,0,3,4};
 		
-		ContactManagerMeetingTest.buildFutureMeetingSetup(cm, meetingData, orderedIDs);
+		ContactManagerMeetingTest.buildMeetingSetup(cm, meetingData, orderedIDs);
 		
 		XStream xstream = new XStream(new StaxDriver());
 
 		String xml = xstream.toXML(cm);
 		
-		System.out.println(xml);
 		
-		ContactManager cm2 = (ContactManager)xstream.fromXML(xml);
+		String filename =  System.getProperty("user.dir") +"\\contacts.xml";
+		
+		System.out.println(filename);
+		File file = new File(filename);
+		try{
+			FileWriter writer = new FileWriter(file);
+			writer.write(xml);
+			writer.close();
+		}catch (IOException ex){
+			System.out.println(ex.getStackTrace());
+		}
+		
+		ContactManager cm2 = (ContactManager)xstream.fromXML(file);
 		
 		String xml2 = xstream.toXML(cm2);
 		
 		System.out.println(xml.equals(xml2));
-		
-		cm2.addFutureMeeting(cm2.getContacts(0,1), TestTools.createCalendarHours(1));
-		System.out.println(cm2.getMeeting(7));
-		
+
 		
 		/*
 		Contact contact0 = new ContactImpl(0,"Name 0", "Notes 0");
@@ -80,7 +83,7 @@ public class scratchpad {
 											   new ContactImpl(2,"2","2"),
 											   new ContactImpl(3,"3","3"));
 		Integer[] filter = {2,3};
-		
+	
 		
 		System.out.println(Arrays.asList(filter).get(0));
 		
