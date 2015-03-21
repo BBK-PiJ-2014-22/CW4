@@ -6,6 +6,10 @@ import java.util.Set;
 import java.text.SimpleDateFormat;
 
 /**{@inheritDoc} 
+ * 
+ * This implementation does NOT handle unique IDs for meetings directly. Uniqueness of IDs must be
+ * handled by the client program using this implementation, by passing a unique ID to the constructor.
+ * 
  */
 public class MeetingImpl implements Meeting {
 	
@@ -16,25 +20,24 @@ public class MeetingImpl implements Meeting {
 	
 	/**{@inheritDoc} 
 	 * 
-	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting. If contacts is null, it will create
-	 * with an empty contact set. 
+	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting. The contact set must have
+	 * at least one contact or else the constructor will throw an exception.
 	 * 
 	 * Uniqueness of ID must be managed by the creating class and is not internally managed by the MeetingImpl class.
 	 * 
-	 * @throws NullPointerException if Date is null
+	 * @throws NullPointerException if Date or contacts are null
+	 * @throws IllegalArgumentException if the Contact Set is null
 	 */	
 	public MeetingImpl(int id, Calendar date, Set<Contact> contacts){
-		this.id = id;
-		
-		if (date == null)
+		if (date == null || contacts == null)
 			throw new NullPointerException();
-		else
-			this.date = date;
-		
-		if (contacts == null)
-			this.contacts = new HashSet<Contact>();
-		else
+		else if (contacts.isEmpty())
+			throw new IllegalArgumentException();
+		else{
+			this.id = id;
 			this.contacts = contacts;
+			this.date = date;
+		}
 	}
 	
 	/**{@inheritDoc} 
