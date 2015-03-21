@@ -7,7 +7,7 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
 
 	/**{@inheritDoc}
 	 * 
-	 * @throws IllegalArgumentException if date is in the past or present
+	 * @throws IllegalArgumentException if date is in the past
 	 */
 	public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts){	
 		super(id, date, contacts);

@@ -53,27 +53,23 @@ public class ContactManagerMeetingTest {
 	}
 	
 	/**AFMTest3- Empty set of contacts, date in the future
+	 * 
+	 * 	Due to the spec of meeting (rather than ContactManager) this should fail 
+	 *  as meetings must have at least 1 contact
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void AFM3emptySetFutureDate(){
-		Calendar meetingdate = TestTools.createCalendarMonths(1);
-		cm.addFutureMeeting(new HashSet<Contact>(), meetingdate);
-		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, new HashSet<Contact>());
-		assertEquals(expected, cm.getFutureMeeting(0));
+		cm.addFutureMeeting(new HashSet<Contact>(), TestTools.createCalendarMonths(1));
 	}
 	
 	/**AFMTest4 - Contact set is null, date is in the future
 	 * 
-	 *Should work (by spec)
-	 * 
+	 *  Due to the spec of meeting (rather than ContactManager) this should fail 
+	 *  as meetings must have at least 1 contact
 	 */
-	//TODO - may need changing if answer on Forum comes back that this should result in null pointer exception
-	@Test
+	@Test(expected = NullPointerException.class)
 	public void AFM4NullSetFutureMeeting(){
-		Calendar meetingdate = TestTools.createCalendarMonths(1);
-		cm.addFutureMeeting(null, meetingdate);
-		FutureMeeting expected = new FutureMeetingImpl(0, meetingdate, null);
-		assertEquals(expected, cm.getFutureMeeting(0));
+		cm.addFutureMeeting(null, TestTools.createCalendarMonths(1));
 	}
 	
 	/**AFMTest5- Some of the Contacts added are not in CM, date in the future
