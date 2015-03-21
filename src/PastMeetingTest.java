@@ -14,9 +14,18 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+/**Test PastMeeting Impl
+ * 
+ * Parameterized to test against a range of note entries
+ *
+ *Test 1 - Tests the notes are working and will always return a string
+ *Test 2 - Tests the meeting cannot be created with a future date
+ * 
+ * @author Jamie
+ *
+ */
 @RunWith(Parameterized.class)
 public class PastMeetingTest {
-
 	Calendar meetingdate;
 	Set<Contact> contacts;
 	int meetingid;
@@ -32,7 +41,6 @@ public class PastMeetingTest {
 	 * 
 	 * @return the parameters for testing
 	 */
-	
 	@Parameters
 	public static Collection<Object[]> data(){
 		return Arrays.asList(new Object[][] {     
@@ -73,11 +81,16 @@ public class PastMeetingTest {
 			this.notes = "";
 	}
 	
+	/**Tests notes return correctly
+	 * 
+	 */
 	@Test
 	public void testGetNotes(){
 		assertEquals(this.notes, this.meeting.getNotes());
 	}
-	
+	/**Tests that the meeting with otherwise good parameters will not create if in the future
+	 * 
+	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void test2FutureMeeting(){
 		new PastMeetingImpl(this.meetingid, TestTools.createCalendarMonths(1), this.contacts, this.notes);
