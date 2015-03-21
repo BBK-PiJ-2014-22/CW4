@@ -14,16 +14,19 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 
-/**Tests for Meeting Implementation.
+/**Parameterized Tests for Meeting Implementation.
  * 
- * 
+ * Tests:
+ * 1 to 3  - Tests getters 
+ * 4 to 8  - Tests .equals(Object)
+ * 9 to 11 - Tests constructor exceptions
+ * 12      - Tests toString();
  * 
  * @author Jamie
  *
  */
 @RunWith(Parameterized.class)
 public class MeetingTest {
-
 	Calendar meetingdate;
 	Set<Contact> contacts;
 	int meetingid;
@@ -37,7 +40,6 @@ public class MeetingTest {
 	 * 
 	 * @return the parameters for testing
 	 */
-	
 	@Parameters
 	public static Collection<Object[]> data(){
 		return Arrays.asList(new Object[][] {     
@@ -48,50 +50,57 @@ public class MeetingTest {
 		
 	}
 	
-	public MeetingTest(int id, int monthChange, int numberOfContacts){
-		
+	/**Constructor creates fields for the SetUp to work with and the tests to match against.
+	 * 
+	 * @param id ID of the meeting to be  made/results to be tested against
+	 * @param monthChange The difference (in months) from current date to create/test against
+	 * @param numberOfContacts The number of contacts to add to the meeting.
+	 */
+	public MeetingTest(int id, int monthChange, int numberOfContacts){	
 		this.meetingdate = TestTools.createCalendarMonths(monthChange);
 		this.meetingid = id;
 		this.contacts = new HashSet<Contact>();
-		
 		for (int i = 0 ; i < numberOfContacts ; i++)
 			this.contacts.add(new ContactImpl(i, "Contact"+i, "Notes for contact "+i));
 	}
 	
+	/**Creates a meeting*/
 	@Before
 	public void setUp(){
 		meeting = new MeetingImpl(this.meetingid, this.meetingdate, this.contacts);
 	}
-
+	
+	//Test Getters.
 	@Test
-	public void testGetID() {
+	public void test1GetID() {
 		assertEquals(this.meetingid, meeting.getId());
 	}
 
 	@Test
-	public void testGetDate() {
+	public void test2GetDate() {
 		assertEquals(this.meetingdate, meeting.getDate());
 	}
 	
 	@Test
-	public void testGetContacts() {
+	public void test3GetContacts() {
 		assertEquals(this.contacts, meeting.getContacts());
 	}
 	
+	//Test .equals(Object)
 	@Test
-	public void testEqualToEqual(){
+	public void test4EqualToEqual(){
 		Meeting compare = new MeetingImpl(this.meetingid, this.meetingdate, this.contacts);
 		assertEquals(true,meeting.equals(compare));		
 	}
 	
 	@Test
-	public void testEqualToUnequalID(){
+	public void test5EqualToUnequalID(){
 		Meeting compare = new MeetingImpl(this.meetingid-1, this.meetingdate, this.contacts);
 		assertEquals(false,meeting.equals(compare));		
 	}
 	
 	@Test
-	public void testEqualToUnequalContacts(){
+	public void test6EqualToUnequalContacts(){
 		
 		Set<Contact> newContacts = new HashSet<Contact>();
 		newContacts.add(new ContactImpl(4, "Non Contact", "Notes"));
@@ -101,30 +110,36 @@ public class MeetingTest {
 	}
 	
 	@Test
-	public void testEqualToUnequalDate(){
+	public void test7EqualToUnequalDate(){
 		Meeting compare = new MeetingImpl(this.meetingid-1, TestTools.createCalendarMonths(6), this.contacts);
 		assertEquals(false,meeting.equals(compare));		
 	}
 	
 	@Test
-	public void testEqualToRandomObject(){
+	public void test8EqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,meeting.equals(compare));		
 	}
 	
+	//Test constructor exceptions
 	@Test (expected = IllegalArgumentException.class)
-	public void testEmptyContactSet(){
+	public void test9EmptyContactSet(){
 		meeting = new MeetingImpl(this.meetingid, this.meetingdate, new HashSet<Contact>());
 	}
 	
 	@Test (expected = NullPointerException.class)
-	public void testNullContactSet(){
+	public void test10NullContactSet(){
 		meeting = new MeetingImpl(this.meetingid, this.meetingdate, null);
 	}
 	
 	@Test (expected = NullPointerException.class)
-	public void testNullDate(){
+	public void test11NullDate(){
 		meeting = new MeetingImpl(this.meetingid, null, this.contacts);
 	}
 
+	//Tests toString()
+	public void test12ToString(){
+		String expected = "Meeting [id=" + this.meetingid + ", date=" + this.meetingdate.getTime() + ", contacts="+ this.contacts + "]";
+		assertEquals(expected,meeting.toString());
+	}
 }
