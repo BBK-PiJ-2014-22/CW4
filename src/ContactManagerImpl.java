@@ -2,11 +2,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,20 +14,30 @@ import java.util.stream.Collectors;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-
+/**{@inheritDoc}
+ * 
+ * All decisions based upon if something is a Past or Future meeting are based upon Class rather than Date
+ * 
+ * @author Jamie
+ *
+ */
 public class ContactManagerImpl implements ContactManager {
-
 	
 	private List<Contact> contactlist;
 	private List<Meeting> meetinglist;	
 	
+	/**Creates a new ContactManger instance
+	 */
 	public ContactManagerImpl(){
 		this.contactlist = new ArrayList<Contact>();
 		this.meetinglist = new ArrayList<Meeting>();
 	}
 	
-	public ContactManagerImpl(File file){
-		
+	/**Creates a new ContactManager instance based upon an XML file, loading the file
+	 * 
+	 * @param file XML file with data
+	 */
+	public ContactManagerImpl(File file){		
 		XStream xstream = new XStream(new StaxDriver());
 		ContactManagerImpl copy = (ContactManagerImpl)xstream.fromXML(file);
 		
@@ -37,12 +45,53 @@ public class ContactManagerImpl implements ContactManager {
 		this.meetinglist = copy.meetinglist;
 	}
 	
+	@Override
+	public String toString() {
+		return "ContactManagerImpl [contactlist=" + contactlist
+				+ ", meetinglist=" + meetinglist + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((contactlist == null) ? 0 : contactlist.hashCode());
+		result = prime * result
+				+ ((meetinglist == null) ? 0 : meetinglist.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ContactManagerImpl other = (ContactManagerImpl) obj;
+		if (contactlist == null) {
+			if (other.contactlist != null)
+				return false;
+		} else if (!contactlist.equals(other.contactlist))
+			return false;
+		if (meetinglist == null) {
+			if (other.meetinglist != null)
+				return false;
+		} else if (!meetinglist.equals(other.meetinglist))
+			return false;
+		return true;
+	}
+	
 	/**{@inheritDoc} 
 	 * 
+	 * Will not accept null or empty contact sets, due to using an extension of Meeting
+	 * 
+	 * @throws IllegalArgumentException if the contact set is null or empty
 	 */
 	@Override
-	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		
+	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {	
 		if (contactSetInCRM(contacts)){
 			Meeting toAdd = new FutureMeetingImpl(this.meetinglist.size(), date, contacts);
 			this.meetinglist.add(toAdd);
@@ -53,6 +102,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	/**{@inheritDoc} 
 	 * 
+	 * Whether a meeting is a FutureMeeting or not is determined by Class rather than Date
 	 */
 	@Override
 	public FutureMeeting getFutureMeeting(int id) {
@@ -69,7 +119,6 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	/**{@inheritDoc} 
-	 * 
 	 */
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
@@ -85,10 +134,10 @@ public class ContactManagerImpl implements ContactManager {
 
 	/**{@inheritDoc} 
 	 * 
+	 * Whether a meeting is a PasteMeeting or not is determined by Class rather than Date
 	 */
 	@Override
 	public PastMeeting getPastMeeting(int id) {
-		//TODO Refactor for DRY with getFutureMeeting (perhaps use generics?)	
 		Meeting toReturn = this.getMeeting(id);
 		if (toReturn == null)
 			return null;
@@ -101,9 +150,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 	}	
 
-
 	/**{@inheritDoc} 
-	 * 
 	 */
 	@Override
 	public Meeting getMeeting(int id) {
@@ -119,6 +166,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	/**{@inheritDoc} 
 	 * 
+	 * Whether a meeting is a FutureMeeting or not is determined by Class rather than Date
 	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
@@ -127,6 +175,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	/**{@inheritDoc} 
 	 * 
+	 * As per forum question, this will return both PastMeetings and FutureMeetings
 	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
@@ -139,6 +188,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	/**{@inheritDoc} 
 	 * 
+	 * Whether a meeting is a PastMeeting or not is determined by Class rather than Date
 	 */
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
@@ -147,33 +197,12 @@ public class ContactManagerImpl implements ContactManager {
 			toReturn.add((PastMeeting) meeting);
 		return toReturn;
 	}
-
-
-	/**Helper function for getFutureMeetingList
-	 * 
-	 * @param contact contact to search for. Should match parent method
-	 * @param meetingType Type of meeting to be found
-	 * @return A sorted list<Meeting> of meetings of meetings of the correct type with that contact.
-	 */
-	private List<Meeting> getMeetingList(Contact contact, Class<? extends Meeting> meetingType) {
-		
-		if (!this.contactIsInCRM(contact))
-			throw new IllegalArgumentException();
-		
-		List<Meeting> toReturn = this.meetinglist.stream()
- 											     .filter(meeting -> meeting.getContacts().contains(contact))
-  											     .filter(meeting -> meetingType.isInstance(meeting))
-											     .collect(Collectors.toList());
-		
-		Collections.sort(toReturn, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
-		return toReturn;
-	}
 	
 	/**{@inheritDoc} 
 	 * 
 	 * Warning: will create a new meeting with the same value rather than update the existing meeting,
 	 * even if the notes are being added to a PastMeeting. Direct references to the object will be lost.
-	 * This is an unavoidable consequence of the interface.
+	 * This is an unavoidable consequence of the interface as notes has no setter.
 	 */
 	@Override
 	public void addMeetingNotes(int id, String text) {
@@ -215,14 +244,12 @@ public class ContactManagerImpl implements ContactManager {
 	 */
 	@Override
 	public Set<Contact> getContacts(int... ids) {
-	
 		List<Integer> filter = new ArrayList<Integer>();
-		
 		for (int i : ids)
 			filter.add(i);
 		
 		Set<Contact> result = this.contactlist.stream()
-											  .filter(contact -> findContactsWithIDs(contact, filter))			       
+											  .filter(contact -> contactIDInList(contact, filter))			       
 											  .collect(Collectors.toSet());
 		if (ids.length > result.size())
 			throw new IllegalArgumentException();
@@ -231,7 +258,6 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	/**{@inheritDoc} 
-	 * 
 	 */
 	@Override
 	public Set<Contact> getContacts(String name) {
@@ -245,7 +271,6 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	/**{@inheritDoc} 
-	 * 
 	 */
 	@Override
 	public void flush() {
@@ -262,31 +287,58 @@ public class ContactManagerImpl implements ContactManager {
 
 	}
 	
-	/**
+	//Helper Functions
+	/**Helper function for getFutureMeetingList and getPastMeetingList. Returns a List<Meeting> of meetings
+	 * that have the type passed to the function and the contact.
 	 * 
+	 * @param contact contact to search for. Should match parent method
+	 * @param meetingType Type of meeting to be found
+	 * @return A sorted list<Meeting> of meetings of meetings of the correct type with that contact.
 	 */
-	private boolean findContactsWithIDs(Contact contact, List<Integer> idList){
+	private List<Meeting> getMeetingList(Contact contact, Class<? extends Meeting> meetingType) {
+		
+		if (!this.contactIsInCRM(contact))
+			throw new IllegalArgumentException();
+		
+		List<Meeting> toReturn = this.meetinglist.stream()
+ 											     .filter(meeting -> meeting.getContacts().contains(contact))
+  											     .filter(meeting -> meetingType.isInstance(meeting))
+											     .collect(Collectors.toList());
+		
+		Collections.sort(toReturn, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
+		return toReturn;
+	}
+	
+	/**Helper function. Will return True if the contact's ID matches an ID in IDlist
+	 * 
+	 * @param contact contact to test
+	 * @param idList list of contact IDs
+	 * @return True if contact.id is in list, false otherwise
+	 */
+	private boolean contactIDInList(Contact contact, List<Integer> idList){
 		return idList.contains(contact.getId());
 	}
 	
-	/**
+	/**Helper Function. Will return True if the contact is in the CRM, False otherwise.
+	 * Note that this will look for if the EXACT object is in the CRM, rather than just
+	 * an objet wil equal values.
 	 * 
-	 * @param contact
-	 * @return
+	 * @param contact to search for
+	 * @return True if the contact is in the CRM, False otherwise.
 	 */
 	private boolean contactIsInCRM(Contact contact){
 		for (Contact contactInCRM : this.contactlist){
-			if (contact == contactInCRM)
+			if (contact == contactInCRM) //Note this uses == intentionally to check for identity
 				return true;
 		}
 		return false;
 	}
 	
-	/**
+	/**Checks if a set of contacts are all in the CRM. Note this requires the contacts
+	 * to be the EXACT object in the CRM, rather than just objects with equal values.
 	 * 
-	 * @param contacts
-	 * @return
-	 * @throws IllegalArgumentException
+	 * @param contacts set of contacts to test.
+	 * @return returns true for Null or empty sets, or if all contacts are contained. 
 	 */
 	private boolean contactSetInCRM(Set<Contact> contacts){
 		
@@ -299,53 +351,22 @@ public class ContactManagerImpl implements ContactManager {
 		return true;
 	}
 	
-	public static boolean sameDate(Calendar c1, Calendar c2){
+	/**Tests if two calendars have the same date (ignoring time)
+	 * 
+	 * @param c1 first calendar to check
+	 * @param c2 second calendar to check
+	 * @return true if the date is the same, false otherwise
+	 */
+	private static boolean sameDate(Calendar c1, Calendar c2){
 		return ((c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) && 
 				(c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)));
 	}
-	
-	
+
+	/**Sorts a meeting list chronologically, lowest to highest
+	 * 
+	 * @param list
+	 */
 	private void sortChronologically(List<Meeting> list){
 		Collections.sort(list, (meeting1, meeting2) -> meeting1.getDate().compareTo(meeting2.getDate()));
 	}
-
-	@Override
-	public String toString() {
-		return "ContactManagerImpl [contactlist=" + contactlist
-				+ ", meetinglist=" + meetinglist + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((contactlist == null) ? 0 : contactlist.hashCode());
-		result = prime * result
-				+ ((meetinglist == null) ? 0 : meetinglist.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ContactManagerImpl other = (ContactManagerImpl) obj;
-		if (contactlist == null) {
-			if (other.contactlist != null)
-				return false;
-		} else if (!contactlist.equals(other.contactlist))
-			return false;
-		if (meetinglist == null) {
-			if (other.meetinglist != null)
-				return false;
-		} else if (!meetinglist.equals(other.meetinglist))
-			return false;
-		return true;
-	}
 }
-
