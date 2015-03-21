@@ -28,7 +28,7 @@ public class PastMeetingTest {
 	 * 1) Meeting ID
 	 * 2) Time (in months) before or after current date that the meeting date should be set to
 	 * 3) Number of contacts to add to the meeting
-	 * 4) Notes (null for no notes passed)
+	 * 4) Notes ("EMPTY" for no notes passed)
 	 * 
 	 * @return the parameters for testing
 	 */
@@ -37,14 +37,19 @@ public class PastMeetingTest {
 	public static Collection<Object[]> data(){
 		return Arrays.asList(new Object[][] {     
                 {1,  -1,  1, null },
+                {1,  -1,  1, "EMPTY"},
                 {1,  -1,  2, "" },
                 {1,  -1,  3, "Past Meeting Notes" },
-                {1,   1,  4, "Future Meeting Notes" }
-
           });
-		
 	}
 	
+	/**Constructor creates fields for the SetUp to work with and the tests to match against.
+	 * 
+	 * @param id ID of meeting
+	 * @param monthChange Date difference (in months) from today
+	 * @param numberOfContacts Number of Contacts to add
+	 * @param notes if EMPTY, will construct without passing notes. Else, will pass notes to constructor
+	 */
 	public PastMeetingTest(int id, int monthChange, int numberOfContacts, String notes){
 		
 		this.meetingdate = new GregorianCalendar();
@@ -59,20 +64,22 @@ public class PastMeetingTest {
 	
 	@Before
 	public void setUp(){
-		if (this.notes == null){
+		if (this.notes == "EMPTY"){
 			this.meeting = new PastMeetingImpl(this.meetingid, this.meetingdate, this.contacts);
 		}else{
 			this.meeting = new PastMeetingImpl(this.meetingid, this.meetingdate, this.contacts, this.notes);
 		}
+		if (this.notes == "EMPTY" || this.notes == null)
+			this.notes = "";
 	}
 	
 	@Test
 	public void testGetNotes(){
+		assertEquals(this.notes, this.meeting.getNotes());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test2FutureMeeting(){
 		
-		String comparator = this.notes;
-		if (comparator == null)
-			comparator = "";
-		assertEquals(comparator, this.meeting.getNotes());
-			
 	}
 }
