@@ -36,10 +36,10 @@ public class PastMeetingTest {
 	@Parameters
 	public static Collection<Object[]> data(){
 		return Arrays.asList(new Object[][] {     
-                {1,  -1,  0, null },
-                {1,  -1,  1, "" },
-                {1,  -1,  1, "Past Meeting Notes" },
-                {1,   1,  1, "Future Meeting Notes" }
+                {1,  -1,  1, null },
+                {1,  -1,  2, "" },
+                {1,  -1,  3, "Past Meeting Notes" },
+                {1,   1,  4, "Future Meeting Notes" }
 
           });
 		
