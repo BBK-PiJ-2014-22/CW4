@@ -6,6 +6,13 @@ import org.junit.Test;
 
 /**UnitTests for ContactImpl
  * 
+ * Tests:
+ * 1-2 - Tests that passing null name or notes will throw NullPointerException
+ * 3-5 - Tests getters for Contact
+ * 6   - Tests addNotes (setter)
+ * 7-9 - Test .equals(object) method
+ * 10  - Test .toString() method
+ * 
  * @author Jamie
  *
  */
@@ -15,7 +22,6 @@ public class ContactTest {
 	int targetID;
 	String targetName;
 	String targetNotes;
-
 	
 	public ContactTest(){
 		this.targetID = 1;
@@ -29,62 +35,59 @@ public class ContactTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testNullNameConstructor(){
+	public void test1NullNameConstructor(){
 		new ContactImpl(targetID, null, targetNotes);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testNullNotesConstructor(){
+	public void test2NullNotesConstructor(){
 		new ContactImpl(targetID, targetName, null);
 	}
 	
 	@Test
-	public void testGetID() {
+	public void test3GetID() {
 		assertEquals(targetID, contact.getId());
 	}
 
 	@Test
-	public void testGetName() {
+	public void test4GetName() {
 		assertEquals(targetName, contact.getName());
 	}
 	
 	@Test
-	public void testGetNotes() {
+	public void test5GetNotes() {
 		assertEquals(targetNotes, contact.getNotes());
 	}
 	
 	@Test
-	public void testAddNotes1(){
+	public void test6AddNotes1(){
 		String addNote = "Second Contact";
 		String resultNote = targetNotes+"\n\n"+addNote;
 		contact.addNotes(addNote);
 		assertEquals(resultNote, contact.getNotes());
 	}
 
-	
 	@Test
-	public void testEqualToEquals(){
+	public void test7EqualToEquals(){
 		Contact comparedContact = new ContactImpl(targetID, targetName, targetNotes);
 		assertEquals(true, contact.equals(comparedContact));
 	}
 	
 	@Test
-	public void testEqualToNotEqual(){
+	public void test8EqualToNotEqual(){
 		Contact comparedContact = new ContactImpl(targetID+1, "Other Contact", "New Notes");
 		assertEquals(false, contact.equals(comparedContact));
 	}
 	
 	@Test
-	public void testEqualToRandomObject(){
+	public void test9EqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,contact.equals(compare));		
 	}
 	
 	@Test
-	public void testToString(){
+	public void test10ToString(){
 		String targetString = "["+this.targetID+", "+this.targetName+", "+this.targetNotes+"]";
 		assertEquals(targetString, contact.toString());
 	}
-	
-	
 }
