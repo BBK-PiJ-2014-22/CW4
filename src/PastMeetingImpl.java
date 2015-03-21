@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
-	String notes; //cannot be private as ContactManager requires direct access
+	private String notes;
 	
 	/**Creates a PastMeeting with the passed parameters. Notes will be set to blank.
 	 * 
