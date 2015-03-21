@@ -3,18 +3,40 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 
 
+/**{@inheritDoc}
+ * 
+ * 
+ * @author Jamie
+ *
+ */
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
-	String notes;
+	String notes; //cannot be private as ContactManager requires direct access
 	
-	//TODO - add constructor exceptions
-	
+	/**Creates a PastMeeting with the passed parameters. Notes will be set to blank.
+	 * 
+	 * ID uniqueness must be handled by a user program and is not guaranteed by the implementation
+	 * 
+	 * @param id meeting ID
+	 * @param date Date of Meeting
+	 * @param contacts
+	 * @throws IllegalArgumentException if date is in the future
+	 */
 	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts){
 		super(id, date, contacts);
 		this.notes = "";
 		checkDateIsPast(date);
 	}
 	
+	/**Creates a PastMeeting with the passed parameters. If notes is null, it will be set to a blank string
+	 * 
+	 * ID uniqueness must be handled by a user program and is not guaranteed by the implementation
+	 * 
+	 * @param id meeting ID
+	 * @param date Date of Meeting
+	 * @param contacts
+	 * @throws IllegalArgumentException if date is in the future
+	 */
 	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes){
 		super(id, date, contacts);
 		if (notes == null)
@@ -28,7 +50,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 		return this.notes;
 	}
 
-	/**Checks that the date is in the past, and throws an exception if not
+	/**Checks that the date is in the past, and throws an exception if not. Used in constructors.
 	 * 
 	 * @param date
 	 * @throws IllegalArgumentException() if date is in the future

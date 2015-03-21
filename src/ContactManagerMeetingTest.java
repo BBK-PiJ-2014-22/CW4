@@ -287,7 +287,7 @@ public class ContactManagerMeetingTest {
 	@Test
 	public void GMTest2MeetingInFuture(){
 		this.cm.addFutureMeeting(cm.getContacts(0,1), TestTools.createCalendarMonths(1));
-		Meeting expected = new PastMeetingImpl(0, TestTools.createCalendarMonths(1), cm.getContacts(0,1), "text");
+		Meeting expected = new FutureMeetingImpl(0, TestTools.createCalendarMonths(1), cm.getContacts(0,1));
 		assertEquals(expected, this.cm.getMeeting(0));
 	}
 	
@@ -652,17 +652,23 @@ public class ContactManagerMeetingTest {
 		
 		Object[][] meetingData = {
 								  {0, cm.getContacts(0,1), TestTools.createCalendarHours(2)},		
-							      {1, cm.getContacts(0,1), TestTools.createCalendarMonths(1)},
-							      {2, cm.getContacts(0,1), TestTools.createCalendarHours(3)},
-							      {3, cm.getContacts(0,1), TestTools.createCalendarMonths(2)},
-							      {4, cm.getContacts(0,1), TestTools.createCalendarHours(4)},
-							      {5, cm.getContacts(0,1), TestTools.createCalendarHours(-1), "Notes"},
-							      {6, cm.getContacts(0,1), TestTools.createCalendarHours(-2), "Notes"}
+							      {1, cm.getContacts(1,2), TestTools.createCalendarMonths(1)},
+							      {2, cm.getContacts(3,4), TestTools.createCalendarHours(3)},
+							      {3, cm.getContacts(5,6), TestTools.createCalendarMonths(2)},
+							      {4, cm.getContacts(7,8), TestTools.createCalendarHours(4)},
+							      {5, cm.getContacts(0,3), TestTools.createCalendarHours(-1), "Notes"},
+							      {6, cm.getContacts(1,4), TestTools.createCalendarHours(-2), "Notes"},
+							      {7, cm.getContacts(2,5), TestTools.createCalendarSeconds(1)}
 							      };
 		int[] ids = {0};
 		
 		buildMeetingSetup(cm, meetingData, ids);
 		cm.flush();
+
+		//this pause is to ensure that the data structure will be preserved 
+		//despite the fact a FutureMeeting (id7) is now past
+		try{ Thread.sleep(2000);
+		}catch (InterruptedException ex){}//Nothing to catch - 
 		File contacts = new File(System.getProperty("user.dir") +"\\contacts.xml");
 		ContactManager cm2 = new ContactManagerImpl(contacts);
 		
