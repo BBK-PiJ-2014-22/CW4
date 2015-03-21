@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +10,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+/**Tests all of the meeting related tests (and flush) for ContactManager
+ * 
+ * @author Jamie
+ *
+ */
 public class ContactManagerMeetingTest {
 
 	ContactManager cm;
@@ -109,7 +113,6 @@ public class ContactManagerMeetingTest {
 	 * 
 	 *Should result in IllegalArgumentException
 	 */
-	//TODO - double check this is the case. Might be ok.
 	@Test(expected = IllegalArgumentException.class)
 	public void AFM8TodaysDate(){
 		cm.addFutureMeeting(cm.getContacts(0,1,2), TestTools.createCalendarMonths(0));
@@ -241,8 +244,6 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, cm.getFutureMeeting(0));
 	}
 	
-	//TODO - Add Past meetings Tests
-	
 	/**APMTest11 - Multiple Meetings added
 	 * 
 	 * Should result in the final meeting ID matching the correct meeting
@@ -259,15 +260,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, actual);
 	}
 	
-	//TODO - Add Get Meeting Tests
-	
-	/**
-	 * Returns the meeting with the requested ID, or null if it there is none.
-	 *
-	 * @param id
-	 *            the ID for the meeting
-	 * @return the meeting with the requested ID, or null if it there is none.
-	 */
+	//Add Get Meeting Tests (GetMeetingTest)
 	
 	/**GetMeetingTest1 - tests itworks for a PastMeeting
 	 * 
@@ -329,8 +322,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(null, this.cm.getFutureMeeting(0));
 	}
 
-	
-	//TODO - Get Past meeting tests
+	//Get Past meeting tests (GPM for short)
 	/**GetPastMeetingTest1 - tests for a future meeting
 	 * 
 	 */
@@ -358,7 +350,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(null, this.cm.getFutureMeeting(0));
 	}
 	
-	//TODO - getFutureMeetingList(Contact) tests (Note: Check order)
+	//getFutureMeetingList(Contact) tests (GFML)
 
 	/**GetFutureMeetingList(Contact)Test1 - no future meetings with contact
 	 * 
@@ -443,7 +435,7 @@ public class ContactManagerMeetingTest {
 	
 	//GetPastMeetingList(Contact) tests (GPML)
 	
-	/**GetPastMeetingList(Contact)Test1 - no future meetings with contact
+	/**GetPastMeetingList(Contact)Test1 - no past meetings with contact
 	 * 
 	 * Should return empty list
 	 */
@@ -457,7 +449,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, actual);
 	}
 	
-	/**GetFutureMeetingList(Contact)Test2 - one future meetings with contact
+	/**GetPastMeetingList(Contact)Test2 - one past meetings with contact
 	 * 
 	 * Should return list of 1 meeting
 	 */
@@ -475,9 +467,8 @@ public class ContactManagerMeetingTest {
 		List<PastMeeting> actual = cm.getPastMeetingList(contact);
 		assertEquals(expected, actual);
 	}
-
 	
-	/**GetFutureMeetingList(Contact)Test3 - multiple future meetings with contact
+	/**GetPastMeetingList(Contact)Test3 - multiple past meetings with contact
 	 * 
 	 * Should return list of 5 meetings, sorted
 	 */
@@ -515,7 +506,7 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, actual);
 	}
 	
-	/**GetFutureMeetingList(Contact)Test4 - contact does not exist
+	/**GetPastMeetingList(Contact)Test4 - contact does not exist
 	 * 
 	 * Should return an IllegalArgumentException
 	 */
@@ -525,7 +516,6 @@ public class ContactManagerMeetingTest {
 		cm.getPastMeetingList(fakecontact);		
 	}
 	
-
 	//getFutureMeetingList(Date) tests (Note: Check order)
 	/**GetFutureMeetingList(Date)Test1 - tests when multiple future meetings match the date
 	 * 
@@ -547,6 +537,9 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(24)));
 	}
 	
+	/**GetFutureMeetingList(Date)Test2 - tests when multiple meetings, both past and future, 
+	 * match the date that all appear, in date order, in the resulting list.
+	 */
 	@Test
 	public void GFMLDateTest2MultiplePastAndFutureMeetings(){
 		Object[][] meetingData = {
@@ -562,7 +555,9 @@ public class ContactManagerMeetingTest {
 		
 		assertEquals(expected,cm.getFutureMeetingList(TestTools.createCalendarHours(0)));
 	}
-		
+	
+	/**GetFutureMeetingList(Date)Test2 - no matches of meeting, should result in empty list
+	 */
 	@Test
 	public void GFMLDateTest3NoMatch(){
 		Object[][] meetingData = {
@@ -581,6 +576,11 @@ public class ContactManagerMeetingTest {
 	}
 	
 	//addMeetingNotes tests
+	
+	/**AMNTest1 - Normal operation
+	 * 
+	 * Adds notes to an existing past meeting
+	 */
 	@Test
 	public void AMNTest1AddNotesToPastMeeting(){
 		this.cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(-1), "Notes1");
@@ -591,13 +591,17 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, cm.getPastMeeting(0));
 	}
 	
+	/**AMNTest2 - tries to add null notes to a meeting
+	 * Should throw NullPointerException 
+	 */
 	@Test (expected = NullPointerException.class)
 	public void AMNTest2AddNullNotes(){
 		this.cm.addNewPastMeeting(cm.getContacts(0), TestTools.createCalendarMonths(-1), "Notes1");
 		cm.addMeetingNotes(0, null);
 	}
 		
-	//Test3 - Add notes to future meeting with past date, check it converts (Force date change?)
+	/**AMNTest3 -Add notes to future meeting with past date by creating it in the future then waiting for it to be past
+	 */
 	@Test
 	public void AMNTest3ConvertFutureMeeting(){
 	
@@ -613,7 +617,9 @@ public class ContactManagerMeetingTest {
 		assertEquals(expected, cm.getPastMeeting(0));
 	}
 
-	//Test4 - Add notes to future meeting with past date, check it converts (Force date change?)
+	/**AMNTest4 - Add notes to future meeting with past date, check it converts (Force date change?)
+	 * Should throw IllegalArgumentException
+	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void AMNTest4ConvertFutureMeetingTryAndGetFuture(){
 		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarSeconds(1));
@@ -625,22 +631,26 @@ public class ContactManagerMeetingTest {
 		cm.addMeetingNotes(0, "Notes");
 		cm.getFutureMeeting(0);
 	}
-
 	
-	//Test5 - Add notes to future meeting, test exception
+	/**AMNTest5 - Add notes to future meeting, test exception
+	 * Should throw IllegalArgumentException
+	 */
 	@Test (expected = IllegalStateException.class)
 	public void AMNTest5MeetingInFuture(){
 		this.cm.addFutureMeeting(cm.getContacts(0), TestTools.createCalendarMonths(1));
 		cm.addMeetingNotes(0, "Notes");
 	}
 	
-	//Test6 - add notes to non existent meeting
+	/**AMNTest6 - add notes to non existent meeting
+	 * 
+	 *Should throw IllegalArgumentException
+	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void AMNTest6MeetingDoesNotExist(){
 		cm.addMeetingNotes(0, "Notes");
 	}
 	
-	
+	//Flush XML Test
 	/**Flush Test - will build a state of the ContactManager (with all types of object) and then
 	 * flush it to XML.
 	 * 
@@ -684,7 +694,7 @@ public class ContactManagerMeetingTest {
 	 * @param orderedIDs IDs of meetings to return in the List<Meeting>
 	 * @return List of meetings in the order of the orderedIDs
 	 */
-	public static List<Meeting> buildMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
+	private static List<Meeting> buildMeetingSetup(ContactManager cm, Object[][] meetingData, int[] orderedIDs){
 		List<Meeting> expected = new ArrayList<Meeting>();
 		
 		for (Object[] row: meetingData)

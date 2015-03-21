@@ -16,7 +16,6 @@ public class ContactManagerContactTests {
 	
 	@Before
 	public void setUp() throws Exception {
-		
 		this.cm = new ContactManagerImpl();	
 	}
 	

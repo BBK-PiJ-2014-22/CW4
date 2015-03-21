@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 public class scratchpad {
 
 	public static void main(String[] args){
-			
+	/*	
 		ContactManager cm = new ContactManagerImpl();
 			for (int i = 0; i < 10 ; i++){
 				cm.addNewContact("Name "+i, "Notes "+i);
