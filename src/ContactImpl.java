@@ -10,9 +10,9 @@
  */
 public class ContactImpl implements Contact {
 
-	int id;
-	String name;
-	String notes;
+	private int id;
+	private String name;
+	private String notes;
 	
 	/**Constructs a new contact with id, name and notes attached to it
 	 * 
