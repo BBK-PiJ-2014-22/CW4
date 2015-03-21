@@ -12,12 +12,10 @@ import java.text.SimpleDateFormat;
  * 
  */
 public class MeetingImpl implements Meeting {
-	
 	private int id;
 	private Calendar date;
 	private Set<Contact> contacts;
 		
-	
 	/**{@inheritDoc} 
 	 * 
 	 * Creates a new meeting, assigning ID, Date and Contacts to the meeting. The contact set must have
@@ -42,12 +40,6 @@ public class MeetingImpl implements Meeting {
 	
 	/**{@inheritDoc} 
 	 */
-	public MeetingImpl(Meeting meeting){
-		
-	}
-
-	/**{@inheritDoc} 
-	 */
 	@Override
 	public int getId() {
 		return this.id;
@@ -69,10 +61,9 @@ public class MeetingImpl implements Meeting {
 	
 	/**{@inheritDoc} 
 	 * 
-	 * Will return true if both objects are meeting, ID, contacts and Notes are the same and the 
-	 * Calendars differ by < 1 second
+	 * Will return true if both objects extend Meeting, and ID, contacts and Notes are the same 
+	 * and the Calendars differ by < 1 second
 	 */
-	
 	@Override
 	public boolean equals(Object object){
 		try{
@@ -94,6 +85,8 @@ public class MeetingImpl implements Meeting {
 				+ contacts + "]";
 	}
 
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
