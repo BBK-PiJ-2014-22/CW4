@@ -9,16 +9,26 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**Tests all contact elements of ContactManger
+ * 
+ * @author Jamie
+ *
+ */
 public class ContactManagerContactTests {
 
 	ContactManager cm;
 	
+	/** Creates blank instance of a ContactManager
+	 * 
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		this.cm = new ContactManagerImpl();	
 	}
 	
+	/**Tests that a normal, valid contact can be added and retrieved
+	 */
 	@Test
 	public void addAndGetNormalContact(){
 		
@@ -30,6 +40,9 @@ public class ContactManagerContactTests {
 		assertArrayEquals(expected, actual);
 	}
 	
+	/**Tests that multiple contacts are added, and that the final contact added is at the expected ID
+	 * 
+	 */
 	@Test
 	public void addMultipleContactsAndGetOne(){
 	
@@ -45,34 +58,48 @@ public class ContactManagerContactTests {
 		assertArrayEquals(expected, actual);
 	}
 	
+	/**Tests that you cannot add a contact with a null name
+	 * 
+	 */
 	@Test(expected = NullPointerException.class)
 	public void addContactNullName(){
 		cm.addNewContact(null, "Test Notes");
 	}
 	
+	/**Tests that you cannot add a contact with null notes
+	 */
 	@Test(expected = NullPointerException.class)
 	public void addContactNullNotes(){
 		cm.addNewContact("Test Name", null);
 	}
 	
+	/**Tests that when no contact has the matching ID IllegalArgumentException is thrown
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void getContactNoMatchingSingleID(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
 		cm.getContacts(10);
 	}
 	
+	/**Tests that when multiple ids (all that don't match) are passed, an IllegalArgumentException is thrown
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void getContactNoMatchingMultipleIDs(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
 		cm.getContacts(10,11,12,13);
 	}
-	
+
+	/**Tests that when multiple ids (with some match and some not) are passed, 
+	 * an IllegalArgumentException is thrown
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void getContactSomeMatchingMultipleIDs(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
 		cm.getContacts(7,8,9,10);
 	}
 	
+	/**Tests that when all IDs match, the correct list is returned
+	 */
 	@Test
 	public void getContactAllMatchingMultipleIDs(){
 		
@@ -91,6 +118,8 @@ public class ContactManagerContactTests {
 		assertArrayEquals(expected, actual);
 	}
 	
+	/**Tests that when trying to search on null string, a nullPointerException is thrown
+	 */
 	@Test(expected = NullPointerException.class)
 	public void getContactNullString(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
@@ -99,6 +128,8 @@ public class ContactManagerContactTests {
 		cm.getContacts(search);
 	}
 	
+	/**Tests that when the string matches, the correct contact is returned.
+	 */
 	public void getContactStringMatches1(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
 		
@@ -109,7 +140,9 @@ public class ContactManagerContactTests {
 		
 		assertArrayEquals(expected, actual);
 	}
-	
+
+	/**Tests that when the string matches multiple contacts, all the correct contacts are returned.
+	 */
 	@Test
 	public void getContactStringMatchesMultiple(){
 		
@@ -146,7 +179,8 @@ public class ContactManagerContactTests {
 				            missingContacts.size() == 0 && extraContacts.size() == 0);			               
 	}
 
-
+	/**Tests that when the string matches nothing, nothing is returned.
+	 */
 	@Test
 	public void getContactStringMatchesNone(){
 		addXContacts(cm, 9, "Test Name", "Test Notes");
@@ -156,7 +190,9 @@ public class ContactManagerContactTests {
 		
 		assertEquals(expected, actual);
 	}
-	
+
+	/**Tests that when the contact list is empty, no exception is thrown
+	 */
 	@Test
 	public void getContactStringNoContacts(){
 		
@@ -164,9 +200,9 @@ public class ContactManagerContactTests {
 		Set<Contact> actual = cm.getContacts("NeverGoingToFindThis");
 		
 		assertEquals(expected, actual);
-
 	}
 	
+	//Helper function, that adds contacts to the CM.
 	private static void addXContacts(ContactManager cm, int x, String namestem, String notestem){
 		for (int i = 0; i <= x ; i++){
 			cm.addNewContact(namestem+i, notestem+i);
