@@ -80,6 +80,6 @@ public class PastMeetingTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test2FutureMeeting(){
-		
+		new PastMeetingImpl(this.meetingid, TestTools.createCalendarMonths(1), this.contacts, this.notes);
 	}
 }
