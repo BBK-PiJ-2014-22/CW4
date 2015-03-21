@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -14,6 +13,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+
+/**Tests for Meeting Implementation.
+ * 
+ * 
+ * 
+ * @author Jamie
+ *
+ */
 @RunWith(Parameterized.class)
 public class MeetingTest {
 
@@ -34,9 +41,9 @@ public class MeetingTest {
 	@Parameters
 	public static Collection<Object[]> data(){
 		return Arrays.asList(new Object[][] {     
-                {1,  1,  0 },
-                {2, -1,  1 },
-                {3,  0 , 2 }
+                {1,  1,  1 },
+                {2, -1,  2 },
+                {3,  0 , 3 }
           });
 		
 	}
@@ -103,5 +110,21 @@ public class MeetingTest {
 	public void testEqualToRandomObject(){
 		Integer compare = new Integer(1);
 		assertEquals(false,meeting.equals(compare));		
-	}	
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEmptyContactSet(){
+		meeting = new MeetingImpl(this.meetingid, this.meetingdate, new HashSet<Contact>());
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testNullContactSet(){
+		meeting = new MeetingImpl(this.meetingid, this.meetingdate, null);
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testNullDate(){
+		meeting = new MeetingImpl(this.meetingid, null, this.contacts);
+	}
+
 }
