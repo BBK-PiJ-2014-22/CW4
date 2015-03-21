@@ -5,7 +5,6 @@
  * This implementation does NOT handle unique IDs for contacts directly. Uniqueness of IDs must be
  * handled by the client program using this implementation, by passing a unique ID to the constructor.
  * 
- * 
  * @author Jamie MacIver
  *
  */
