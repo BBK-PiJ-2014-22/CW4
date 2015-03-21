@@ -1,7 +1,16 @@
 
+
+/**{@inheritDoc}
+ * 
+ * This implementation does NOT handle unique IDs for contacts directly. Uniqueness of IDs must be
+ * handled by the client program using this implementation, by passing a unique ID to the constructor.
+ * 
+ * 
+ * @author Jamie MacIver
+ *
+ */
 public class ContactImpl implements Contact {
 
-	
 	int id;
 	String name;
 	String notes;
@@ -49,7 +58,9 @@ public class ContactImpl implements Contact {
 	public void addNotes(String note) {
 		this.notes += "\n\n"+note;
 	}
-
+	
+	/**{@inheritDoc} 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -63,6 +74,7 @@ public class ContactImpl implements Contact {
 	/**{@inheritDoc}
 	 * 
 	 * Contacts are equal to other contacts if all fields are equal, else not
+	 * They will only be equal to other contacts.
 	 */
 	@Override
 	public boolean equals(Object object){
